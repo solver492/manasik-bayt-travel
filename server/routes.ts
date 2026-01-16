@@ -166,7 +166,7 @@ async function seedDatabase() {
       imageUrl: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2949&auto=format&fit=crop",
       isFeatured: true
     });
-    
+
     // Group
     await storage.createOffer({
       title: "Malaysia en Groupe",
@@ -180,21 +180,81 @@ async function seedDatabase() {
       imageUrl: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2922&auto=format&fit=crop",
       isFeatured: false
     });
+
+    // NEW SERVICES: Flights, Hotels, Cars, Yachts
+    await storage.createOffer({
+      title: "Billets d'avion au meilleur prix",
+      slug: "vols-competitifs",
+      type: "pack",
+      description: "Réservation de billets d'avion vers toutes les destinations avec des prix défiant toute concurrence.",
+      program: [{ day: 1, title: "Recherche & Réservation", desc: "Accompagnement personnalisé pour trouver le meilleur vol." }],
+      price: 1500,
+      currency: "MAD",
+      durationDays: 1,
+      imageUrl: "https://images.unsplash.com/photo-1436491865332-7a61a109c0f3?q=80&w=2070&auto=format&fit=crop",
+      isFeatured: true
+    });
+
+    await storage.createOffer({
+      title: "Hôtels de luxe & Charme",
+      slug: "hotels-selection",
+      type: "pack",
+      description: "Une sélection d'hôtels prestigieux pour tous vos séjours, affaires ou loisirs.",
+      program: [{ day: 1, title: "Sélection sur mesure", desc: "Nous choisissons l'hôtel idéal selon vos critères." }],
+      price: 800,
+      currency: "MAD",
+      durationDays: 1,
+      imageUrl: "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+      isFeatured: true
+    });
+
+    await storage.createOffer({
+      title: "Location de Voitures & Yachts",
+      slug: "location-luxe",
+      type: "pack",
+      description: "Déplacez-vous avec style. Location de voitures de luxe et yachts privés pour vos escapades.",
+      program: [{ day: 1, title: "Liberté totale", desc: "Réservation rapide et suivi personnalisé." }],
+      price: 2500,
+      currency: "MAD",
+      durationDays: 1,
+      imageUrl: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=2070&auto=format&fit=crop",
+      isFeatured: true
+    });
+
+    // BUSINESS & ADVENTURE ACCOMPANIMENT
+    await storage.createOffer({
+      title: "Voyages d'Affaires & Aventures",
+      slug: "accompagnement-premium",
+      type: "organise",
+      description: "Accompagnement complet pour vos voyages d'affaires, séjours loisirs et aventures avec suivi à chaque étape.",
+      program: [{ day: 1, title: "Planification", desc: "Organisation rigoureuse de votre itinéraire." }],
+      price: 5000,
+      currency: "MAD",
+      durationDays: 1,
+      imageUrl: "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=2074&auto=format&fit=crop",
+      isFeatured: true
+    });
   }
 
   const content = await storage.getContent();
   if (content.length === 0) {
     await storage.createContent({
+      title: "Restez connecté avec l'eSIM",
+      category: "esim",
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      description: "Évitez les frais d'itinérance lors de vos voyages grâce à l'eSIM. Découvrez comment rester connecté partout dans le monde."
+    });
+    await storage.createContent({
       title: "Comment activer votre eSIM ?",
       category: "esim",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", // Placeholder
-      description: "Tutoriel rapide pour rester connecté."
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      description: "Tutoriel rapide pour activer votre eSIM en quelques minutes."
     });
     await storage.createContent({
       title: "Guide du Pèlerin: Ihram",
       category: "guide",
       videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", 
-      description: "Les étapes essentielles de l'Ihram."
+      description: "Les étapes essentielles de l'Ihram pour un pèlerinage réussi."
     });
   }
 }
