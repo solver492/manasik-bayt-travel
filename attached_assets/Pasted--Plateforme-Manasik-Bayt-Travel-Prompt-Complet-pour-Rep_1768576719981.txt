@@ -1,0 +1,1811 @@
+# 🕌 Plateforme Manasik Bayt Travel - Prompt Complet pour Replit AI
+
+## 📋 Vue d'ensemble du projet
+
+Créer une plateforme web complète et moderne pour **Manasik Bayt Travel**, agence de voyage spécialisée dans :
+- ✈️ Omra et Hajj (voyages spirituels)
+- 🌍 Voyages touristiques internationaux
+- 👥 Voyages organisés en groupe
+- 📦 Packs combinés (Omra + tourisme, circuits)
+
+---
+
+## 🎯 Objectifs principaux
+
+### Fonctionnalités essentielles
+1. **Vitrine moderne** avec présentation claire des offres
+2. **Système de réservation/devis** en ligne
+3. **Espace client** pour suivre ses demandes
+4. **Back-office admin** pour gérer offres et clients
+5. **Responsive design** mobile-first
+6. **Optimisation SEO** pour visibilité Google
+
+### Architecture technique
+- **Monorepo** avec frontend et backend séparés
+- **API REST** pour communication front/back
+- **Authentification JWT** avec gestion de rôles
+- **Base de données** structurée et évolutive
+- **Code maintenable** et bien organisé
+
+---
+
+## 🛠 Stack Technique
+
+### Frontend
+```
+Framework: Next.js 14+ (App Router)
+Langage: TypeScript
+Styling: Tailwind CSS
+State Management: React Context + Hooks
+Forms: React Hook Form + Zod validation
+HTTP Client: Axios ou fetch API
+```
+
+### Backend
+```
+Runtime: Node.js 18+
+Framework: Express.js
+Langage: TypeScript
+ORM: Prisma (avec PostgreSQL) OU Mongoose (avec MongoDB)
+Auth: JWT (jsonwebtoken + bcrypt)
+Validation: Zod
+```
+
+### Base de données
+```
+Choix recommandé: PostgreSQL
+Alternative: MongoDB
+Hébergement: Supabase / Railway / Render
+```
+
+### DevOps & Déploiement
+```
+Frontend: Vercel
+Backend: Render / Railway
+Variables d'environnement: .env (gitignored)
+```
+
+---
+
+## 🎨 Identité Visuelle
+
+### Palette de couleurs
+```css
+/* Couleurs principales */
+--primary-dark: #0F2F2A;      /* Vert foncé - headers, backgrounds */
+--primary-gold: #C8AF87;       /* Beige doré - accents, CTA */
+--white: #FFFFFF;              /* Texte sur fond foncé */
+--light-bg: #F5F5F0;           /* Backgrounds clairs */
+--text-dark: #1A1A1A;          /* Texte principal */
+--gray-medium: #6B7280;        /* Texte secondaire */
+
+/* États et accents */
+--success: #10B981;
+--warning: #F59E0B;
+--error: #EF4444;
+```
+
+### Typographie
+```css
+/* Titres */
+font-family: 'Playfair Display', serif;
+/* Alternative: 'Cormorant Garamond', 'Lora' */
+
+/* Corps de texte */
+font-family: 'Inter', sans-serif;
+/* Alternative: 'Roboto', 'Open Sans' */
+```
+
+### Logo
+- Texte "Manasik Bayt Travel" avec calligraphie arabe
+- Version sur fond foncé (texte clair)
+- Version sur fond clair (texte foncé)
+- Favicon: symbole calligraphique seul
+
+---
+
+## 📐 Structure du Projet
+
+### Organisation des dossiers
+
+```
+manasik-bayt-travel/
+├── frontend/
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── (public)/
+│   │   │   │   ├── page.tsx                 # Accueil
+│   │   │   │   ├── manasik/
+│   │   │   │   │   ├── page.tsx             # Liste Omra/Hajj
+│   │   │   │   │   └── [slug]/page.tsx      # Détail offre
+│   │   │   │   ├── voyages/
+│   │   │   │   │   ├── page.tsx             # Voyages touristiques
+│   │   │   │   │   └── [slug]/page.tsx
+│   │   │   │   ├── organises/
+│   │   │   │   │   ├── page.tsx             # Voyages de groupe
+│   │   │   │   │   └── [slug]/page.tsx
+│   │   │   │   ├── packs/
+│   │   │   │   │   ├── page.tsx             # Packs combinés
+│   │   │   │   │   └── [slug]/page.tsx
+│   │   │   │   ├── a-propos/page.tsx
+│   │   │   │   └── contact/page.tsx
+│   │   │   ├── (auth)/
+│   │   │   │   ├── login/page.tsx
+│   │   │   │   └── register/page.tsx
+│   │   │   ├── (protected)/
+│   │   │   │   ├── espace-client/
+│   │   │   │   │   ├── page.tsx             # Dashboard client
+│   │   │   │   │   ├── mes-demandes/page.tsx
+│   │   │   │   │   └── profil/page.tsx
+│   │   │   │   └── admin/
+│   │   │   │       ├── page.tsx             # Dashboard admin
+│   │   │   │       ├── offres/
+│   │   │   │       │   ├── page.tsx         # Liste offres
+│   │   │   │       │   ├── nouveau/page.tsx
+│   │   │   │       │   └── [id]/edit/page.tsx
+│   │   │   │       ├── demandes/page.tsx
+│   │   │   │       └── utilisateurs/page.tsx
+│   │   │   ├── layout.tsx
+│   │   │   └── globals.css
+│   │   ├── components/
+│   │   │   ├── layout/
+│   │   │   │   ├── Header.tsx
+│   │   │   │   ├── Footer.tsx
+│   │   │   │   └── Navbar.tsx
+│   │   │   ├── ui/
+│   │   │   │   ├── Button.tsx
+│   │   │   │   ├── Card.tsx
+│   │   │   │   ├── Input.tsx
+│   │   │   │   ├── Modal.tsx
+│   │   │   │   └── Badge.tsx
+│   │   │   ├── offers/
+│   │   │   │   ├── OfferCard.tsx
+│   │   │   │   ├── OfferFilters.tsx
+│   │   │   │   ├── OfferDetails.tsx
+│   │   │   │   └── ProgrammeTimeline.tsx
+│   │   │   └── forms/
+│   │   │       ├── BookingForm.tsx
+│   │   │       ├── ContactForm.tsx
+│   │   │       └── OfferForm.tsx (admin)
+│   │   ├── lib/
+│   │   │   ├── api.ts                       # API client
+│   │   │   ├── auth.ts                      # Auth utilities
+│   │   │   └── utils.ts
+│   │   ├── contexts/
+│   │   │   └── AuthContext.tsx
+│   │   ├── types/
+│   │   │   └── index.ts
+│   │   └── styles/
+│   │       └── globals.css
+│   ├── public/
+│   │   ├── images/
+│   │   ├── favicon.ico
+│   │   └── logo.svg
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── tailwind.config.ts
+│   └── next.config.js
+│
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   ├── database.ts
+│   │   │   └── env.ts
+│   │   ├── models/
+│   │   │   ├── User.ts
+│   │   │   ├── Offer.ts
+│   │   │   └── BookingRequest.ts
+│   │   ├── controllers/
+│   │   │   ├── authController.ts
+│   │   │   ├── offerController.ts
+│   │   │   ├── requestController.ts
+│   │   │   └── userController.ts
+│   │   ├── routes/
+│   │   │   ├── auth.routes.ts
+│   │   │   ├── offer.routes.ts
+│   │   │   ├── request.routes.ts
+│   │   │   └── user.routes.ts
+│   │   ├── middlewares/
+│   │   │   ├── auth.middleware.ts
+│   │   │   ├── validation.middleware.ts
+│   │   │   └── error.middleware.ts
+│   │   ├── utils/
+│   │   │   ├── jwt.ts
+│   │   │   └── hash.ts
+│   │   ├── validators/
+│   │   │   ├── auth.validator.ts
+│   │   │   ├── offer.validator.ts
+│   │   │   └── request.validator.ts
+│   │   └── server.ts
+│   ├── prisma/                              # Si PostgreSQL
+│   │   ├── schema.prisma
+│   │   └── seed.ts
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── .env.example
+│
+├── .gitignore
+└── README.md
+```
+
+---
+
+## 🗄 Modèles de Données
+
+### User (Utilisateur)
+```typescript
+interface User {
+  id: string;
+  email: string;
+  password_hash: string;
+  nom: string;
+  prenom: string;
+  telephone: string;
+  role: 'client' | 'agent' | 'admin';
+  created_at: Date;
+  updated_at: Date;
+}
+```
+
+### Offer (Offre de voyage)
+```typescript
+interface Offer {
+  id: string;
+  slug: string;                              // URL-friendly
+  title: string;
+  type: 'manasik' | 'touristique' | 'organise' | 'pack';
+  subtype?: string;                          // 'omra' | 'hajj' | 'city_trip' etc.
+  level?: 'eco' | 'confort' | 'premium';
+  
+  // Descriptions
+  description_courte: string;
+  description_detaillee: string;
+  
+  // Programme
+  programme: Array<{
+    jour: number;
+    titre: string;
+    description: string;
+  }>;
+  
+  // Inclusions
+  inclus: string[];
+  non_inclus: string[];
+  
+  // Prix et durée
+  prix_a_partir_de: number;
+  devise: 'MAD' | 'EUR';
+  duree_jours: number;
+  
+  // Logistique
+  depart_ville?: string;
+  dates_possibles?: Date[];
+  nb_places_min?: number;                    // Pour voyages organisés
+  nb_places_max?: number;
+  
+  // Médias
+  images: string[];                          // URLs
+  image_principale?: string;
+  
+  // Meta
+  status: 'published' | 'draft';
+  created_at: Date;
+  updated_at: Date;
+  
+  // SEO
+  meta_title?: string;
+  meta_description?: string;
+}
+```
+
+### BookingRequest (Demande de réservation)
+```typescript
+interface BookingRequest {
+  id: string;
+  
+  // Client
+  user_id?: string;                          // Si connecté
+  nom: string;
+  prenom: string;
+  email: string;
+  telephone: string;
+  
+  // Demande
+  offer_id?: string;                         // Si lié à une offre
+  type_voyage: 'manasik' | 'touristique' | 'organise' | 'pack';
+  nb_personnes?: number;
+  date_souhaitee?: Date;
+  message: string;
+  
+  // Statut
+  statut: 'nouveau' | 'en_cours' | 'traite' | 'confirme' | 'annule';
+  
+  // Meta
+  created_at: Date;
+  updated_at: Date;
+  
+  // Notes internes (admin)
+  notes_admin?: string;
+}
+```
+
+---
+
+## 🔌 API REST - Endpoints
+
+### Authentification
+```
+POST   /api/auth/register
+POST   /api/auth/login
+GET    /api/auth/me           [Protected]
+POST   /api/auth/logout       [Protected]
+```
+
+### Offres
+```
+GET    /api/offers                    # Liste avec filtres
+GET    /api/offers/:id                # Détail
+GET    /api/offers/slug/:slug         # Par slug
+POST   /api/offers                    # [Admin/Agent]
+PUT    /api/offers/:id                # [Admin/Agent]
+DELETE /api/offers/:id                # [Admin]
+
+Filtres disponibles:
+- type (manasik|touristique|organise|pack)
+- subtype
+- level
+- prix_min, prix_max
+- depart_ville
+- status (admin seulement)
+```
+
+### Demandes de réservation
+```
+POST   /api/requests                  # Public (formulaire)
+GET    /api/requests                  # [Admin/Agent] - Toutes
+GET    /api/requests/me               # [Client] - Ses demandes
+GET    /api/requests/:id              # [Protected]
+PATCH  /api/requests/:id/status       # [Admin/Agent]
+DELETE /api/requests/:id              # [Admin]
+```
+
+### Utilisateurs
+```
+GET    /api/users/me                  # [Protected]
+PATCH  /api/users/me                  # [Protected]
+GET    /api/users                     # [Admin]
+PATCH  /api/users/:id                 # [Admin]
+DELETE /api/users/:id                 # [Admin]
+```
+
+### Format de réponse standard
+```typescript
+// Success
+{
+  success: true,
+  data: { ... },
+  message?: string
+}
+
+// Error
+{
+  success: false,
+  error: {
+    message: string,
+    code?: string,
+    details?: any
+  }
+}
+```
+
+---
+
+## 🎨 Pages & Composants Front-End
+
+### 1. Page d'Accueil (`/`)
+
+**Sections:**
+```
+1. Hero Section
+   - Logo Manasik Bayt Travel
+   - Slogan: "Voyages spirituels & découvertes du monde"
+   - Image de fond: Kaaba ou mosquée
+   - 2 CTA principaux:
+     * "Découvrir nos offres Omra & Hajj"
+     * "Explorer nos destinations"
+
+2. Nos Univers (4 cartes)
+   - Manasik (Omra & Hajj)
+     * Icône: 🕌
+     * Texte: "Voyages spirituels accompagnés"
+   - Voyages Touristiques
+     * Icône: ✈️
+     * Texte: "Découvrez le monde"
+   - Voyages Organisés
+     * Icône: 👥
+     * Texte: "Partez en groupe"
+   - Packs Combinés
+     * Icône: 📦
+     * Texte: "Spirituel + tourisme"
+
+3. Nos Engagements (bandeau)
+   - ✓ Accompagnement complet avant, pendant et après
+   - ✓ Offres adaptées à chaque budget et famille
+   - ✓ Partenaires agréés, hébergements sélectionnés
+   - ✓ Équipe francophone et expérimentée
+
+4. Offres à la Une
+   - Carousel de 3-4 offres populaires
+   - Prix, durée, destination
+   - Bouton "Voir détails"
+
+5. Pourquoi nous choisir
+   - Expérience (X années)
+   - Clients satisfaits
+   - Destinations couvertes
+   - Note satisfaction
+
+6. Témoignages
+   - 2-3 avis clients avec photos (placeholder)
+
+7. Newsletter
+   - "Recevez nos meilleures offres"
+   - Input email + CTA
+```
+
+### 2. Page Manasik (`/manasik`)
+
+**Fonctionnalités:**
+```
+- Filtres sidebar:
+  * Type: Omra | Omra Ramadan | Hajj
+  * Niveau: Eco | Confort | Premium
+  * Ville de départ: Paris, Lyon, Bruxelles...
+  * Prix max (slider)
+  * Durée (7, 10, 15 jours...)
+
+- Liste d'offres en grille (3 colonnes desktop)
+  * Image principale
+  * Badge type + niveau
+  * Titre
+  * Durée + ville départ
+  * Prix à partir de
+  * Principales inclusions (icônes)
+  * Bouton "Voir détails"
+
+- Pagination ou infinite scroll
+
+- Bandeau informatif:
+  "Tous nos voyages Omra et Hajj sont conformes aux réglementations
+  et incluent l'assistance d'un accompagnateur francophone"
+```
+
+### 3. Page Détail Offre (`/manasik/[slug]`)
+
+**Structure:**
+```
+1. En-tête
+   - Breadcrumb: Accueil > Manasik > [Titre offre]
+   - Titre de l'offre
+   - Badges: Type, Niveau, Durée
+   - Prix à partir de (grand)
+   - CTA: "Demander un devis" (sticky en mobile)
+
+2. Galerie d'images
+   - Image principale + thumbnails
+
+3. Résumé
+   - Ville de départ
+   - Durée
+   - Dates disponibles
+   - Niveau
+   - Hébergement (hôtel 3*, 4*, 5*)
+
+4. Programme détaillé (Timeline verticale)
+   Jour 1: Départ et arrivée
+   - Description détaillée
+   
+   Jour 2: Visite de...
+   - Description détaillée
+   
+   [...]
+
+5. Inclus / Non inclus (2 colonnes)
+   
+   ✅ Inclus:
+   - Vol aller-retour
+   - Hébergement en chambre double
+   - Petit-déjeuner et dîner
+   - Transferts aéroport/hôtel
+   - Accompagnateur francophone
+   - Assurance voyage
+   
+   ❌ Non inclus:
+   - Visa
+   - Déjeuners
+   - Dépenses personnelles
+
+6. Informations pratiques
+   - Documents requis
+   - Santé et vaccins
+   - Bagages
+   - Paiement (acompte, échéances)
+
+7. FAQ spécifique
+   - Questions fréquentes sur cette offre
+
+8. Formulaire de réservation
+   - Nom, prénom
+   - Email, téléphone
+   - Nombre de personnes
+   - Date souhaitée
+   - Message/questions
+   - CTA: "Envoyer ma demande"
+
+9. Offres similaires
+   - Carousel de 3 autres offres du même type
+```
+
+### 4. Page Voyages Touristiques (`/voyages`)
+
+**Catégories:**
+```
+- Filtres:
+  * Continent: Europe, Asie, Afrique...
+  * Type: City trip, Circuit, Balnéaire, Aventure, Culturel
+  * Durée
+  * Budget
+
+- Destinations populaires (cartes avec photos):
+  * Turquie (Istanbul, Cappadoce)
+  * Émirats (Dubaï, Abu Dhabi)
+  * Égypte (Le Caire, Louxor)
+  * Maroc (Marrakech, Chefchaouen, Merzouga)
+  * Europe (Paris, Rome, Londres)
+
+- Structure similaire à page Manasik mais focus tourisme
+```
+
+### 5. Page Packs (`/packs`)
+
+**Types de packs:**
+```
+1. Packs Spirituels + Tourisme
+   - Omra + Istanbul (5j Omra + 3j Istanbul)
+   - Omra + Dubaï
+   - Hajj + Le Caire
+
+2. Packs Week-end Maroc
+   - Marrakech + Essaouira
+   - Fès + Chefchaouen
+   - Désert de Merzouga (3 jours)
+
+3. Packs Famille
+   - Omra Famille (hébergement adapté)
+   - Turquie Famille
+   - Andalousie en famille
+
+4. Packs Premium
+   - Omra VIP (hôtels 5*)
+   - Dubaï Luxe
+   - Croisière Méditerranée
+
+Mise en avant visuelle:
+- Grandes cartes avec photos attractives
+- Tag "Pack combiné"
+- Prix économisé vs séparé
+- Détails des 2 parties du pack
+```
+
+### 6. Espace Client (`/espace-client`)
+
+**Dashboard:**
+```
+Sidebar navigation:
+- Tableau de bord
+- Mes demandes
+- Mes documents
+- Mon profil
+- Déconnexion
+
+Vue "Mes demandes":
+- Tableau avec:
+  * Date
+  * Type voyage
+  * Offre
+  * Statut (badge coloré)
+  * Actions (Voir détails)
+
+- Détail d'une demande:
+  * Toutes les infos soumises
+  * Statut actuel
+  * Notes agent (si disponibles)
+  * Documents à télécharger (voucher, contrat)
+  * Messagerie avec agent (future feature)
+```
+
+### 7. Back-Office Admin (`/admin`)
+
+**Modules:**
+```
+1. Dashboard
+   - Stats: Nouvelles demandes, offres publiées, clients
+   - Graphiques: Demandes par mois, types populaires
+   - Dernières demandes
+
+2. Gestion Offres
+   - Liste: tableau filtrable, cherchable
+   - Colonnes: Titre, Type, Prix, Statut, Date, Actions
+   - Créer offre:
+     * Form complet avec tous les champs
+     * Upload images
+     * Éditeur rich text pour descriptions
+   - Modifier offre: même formulaire pré-rempli
+   - Supprimer (avec confirmation)
+
+3. Gestion Demandes
+   - Tableau avec filtres par statut
+   - Détail: voir toutes infos client
+   - Changer statut
+   - Ajouter notes internes
+   - Envoyer email client (future)
+
+4. Gestion Utilisateurs
+   - Liste clients, agents
+   - Modifier rôles
+   - Voir historique demandes par user
+```
+
+---
+
+## 🎯 Composants UI Réutilisables
+
+### Button Component
+```typescript
+interface ButtonProps {
+  variant: 'primary' | 'secondary' | 'outline' | 'ghost';
+  size: 'sm' | 'md' | 'lg';
+  children: React.ReactNode;
+  onClick?: () => void;
+  disabled?: boolean;
+  loading?: boolean;
+  fullWidth?: boolean;
+}
+
+Variantes:
+- primary: bg-gold, hover:bg-gold-dark
+- secondary: bg-dark, hover:bg-dark-light
+- outline: border-gold, text-gold
+- ghost: transparent, text-dark
+```
+
+### Card Component
+```typescript
+interface CardProps {
+  children: React.ReactNode;
+  hoverable?: boolean;
+  padding?: 'sm' | 'md' | 'lg';
+  shadow?: boolean;
+}
+
+Usage: OfferCard, PackCard, StatCard
+```
+
+### Badge Component
+```typescript
+interface BadgeProps {
+  variant: 'success' | 'warning' | 'error' | 'info' | 'neutral';
+  children: React.ReactNode;
+  size?: 'sm' | 'md';
+}
+
+Usage: Statut demandes, tags offres, niveaux
+```
+
+### Modal Component
+```typescript
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  title: string;
+  children: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+}
+
+Usage: Confirmation suppression, formulaires rapides
+```
+
+---
+
+## 📱 Responsive Design
+
+### Breakpoints Tailwind
+```css
+sm: 640px   /* Mobile landscape */
+md: 768px   /* Tablet */
+lg: 1024px  /* Desktop */
+xl: 1280px  /* Large desktop */
+2xl: 1536px /* Extra large */
+```
+
+### Mobile-first approach
+```
+- Menu burger sur mobile avec slide-in sidebar
+- Cartes offres: 1 colonne sur mobile, 2 sur tablet, 3 sur desktop
+- Filtres: drawer sur mobile, sidebar sur desktop
+- Tables admin: scroll horizontal + responsive colonnes
+- Images: responsive avec aspect ratio préservé
+```
+
+---
+
+## 🔒 Authentification & Sécurité
+
+### Flow d'authentification
+```
+1. Inscription:
+   - Validation email (format + unicité)
+   - Hash password (bcrypt, salt rounds: 10)
+   - Envoyer email de bienvenue (optionnel)
+   - Auto-login après inscription
+
+2. Login:
+   - Vérifier credentials
+   - Générer JWT (expire 7 jours)
+   - Stocker token côté client (localStorage ou httpOnly cookie)
+   - Rediriger selon rôle
+
+3. Middleware auth:
+   - Vérifier présence token
+   - Vérifier validité token
+   - Décoder user_id et role
+   - Attacher user à request
+
+4. Middleware role:
+   - Vérifier role requis pour route
+   - Bloquer si insuffisant
+```
+
+### JWT Structure
+```typescript
+{
+  user_id: string;
+  email: string;
+  role: string;
+  iat: number;  // Issued at
+  exp: number;  // Expiration
+}
+```
+
+### Validation Zod (exemple)
+```typescript
+const registerSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8).regex(/[A-Z]/).regex(/[0-9]/),
+  nom: z.string().min(2),
+  prenom: z.string().min(2),
+  telephone: z.string().regex(/^[0-9+\s()-]+$/)
+});
+```
+
+---
+
+## 🌐 SEO & Performance
+
+### Meta Tags (Next.js)
+```typescript
+// app/manasik/[slug]/page.tsx
+export async function generateMetadata({ params }) {
+  const offer = await getOffer(params.slug);
+  
+  return {
+    title: `${offer.title} - Manasik Bayt Travel`,
+    description: offer.meta_description || offer.description_courte,
+    openGraph: {
+      title: offer.title,
+      description: offer.description_courte,
+      images: [offer.image_principale],
+    }
+  };
+}
+```
+
+### Structure URLs
+```
+✅ Bonnes URLs:
+/manasik/omra-serenite-10-jours
+/voyages/istanbul-perle-du-bosphore
+/packs/omra-istanbul-combinee
+
+❌ Mauvaises URLs:
+/offer?id=123
+/product/view/456
+```
+
+### Performance
+```
+- Next.js Image optimization (auto WebP, lazy load)
+- Pagination/infinite scroll (pas tout charger)
+- API: caching avec Redis (future)
+- Static generation pour pages stables
+- Dynamic pour offres (ISR - revalidate: 3600)
+```
+
+### Sitemap & Robots
+```xml
+<!-- public/sitemap.xml -->
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://manasikbayt.com/</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://manasikbayt.com/manasik</loc>
+    <priority>0.9</priority>
+  </url>
+  <!-- Générer dynamiquement pour chaque offre -->
+</urlset>
+```
+
+---
+
+## 📊 Seed Data (Données d'exemple)
+
+### Offres exemple à créer
+
+**Omra Sérénité - 10 jours**
+```
+Type: manasik
+Subtype: omra
+Level: confort
+Prix: 1850 EUR
+Durée: 10 jours
+Ville départ: Paris
+Programme:
+  J1: Départ Paris - Arrivée Médine
+  J2-J4: Médine (visite mosquée Prophète)
+  J5: Départ Médine - Arrivée Mecque
+  J6-J9: Mecque (accomplissement rites Omra)
+  J10: Retour Paris
+Inclus: Vol, hébergement 3*, petits-déj/dîners, transferts, guide
+```
+
+**Pack Omra + Istanbul - 13 jours**
+```
+Type: pack
+Prix: 2300 EUR
+Partie 1: Omra 10j (comme ci-dessus)
+Partie 2: Istanbul 3j (Sainte-Sophie, Bosphore, Grand Bazar)
+```
+
+**Circuit Maroc Authentique - 7 jours**
+```
+Type: touristique
+Subtype: circuit
+Prix: 850 EUR
+Itinéraire: Marrakech > Aït Ben Haddou > Merzouga (désert) > Fès
+Inclus: Transport, hébergement riads, nuit en bivouac désert
+```
+
+---
+
+## ✅ Checklist de Livraison
+
+### MVP Fonctionnel
+- [ ] Frontend Next.js initialisé avec Tailwind
+- [ ] Backend Express + TypeScript configuré
+- [ ] Base de données (Prisma ou Mongoose) initialisée
+- [ ] Modèles User, Offer, BookingRequest créés
+- [ ] Auth JWT fonctionnelle (register, login, me)
+- [ ] CRUD offres (admin)
+- [ ] API publique offres (liste + détail)
+- [ ] Formulaire demande devis fonctionnel
+- [ ] Page accueil avec sections principales
+- [ ] Page liste offres avec filtres basiques
+- [ ] Page détail offre complète
+- [ ] Espace client (mes demandes)
+- [ ] Back-office admin (offres + demandes)
+- [ ] Responsive mobile
+- [ ] Seed data (3-5 offres exemple)
+- [ ] README avec instructions lancement
+
+### Code Quality
+- [ ] TypeScript strict mode activé
+- [ ] ESLint + Prettier configurés
+- [ ] Variables d'environnement documentées (.env.example)
+- [ ] Gestion erreurs globale (try/catch, error boundaries)
+- [ ] Validation inputs (Zod) côté back
+- [ ] Code commenté aux endroits clés
+- [ ] Architecture dossiers claire et logique
+
+### Sécurité
+- [ ] Passwords hashés (bcrypt)
+- [ ] JWT avec expiration
+- [ ] Protection routes admin/agent
+- [ ] Validation/sanitization inputs
+- [ ] CORS configuré correctement
+- [ ] Rate limiting (optionnel mais recommandé)
+
+---
+
+## 🚀 Instructions de Démarrage
+
+### Prérequis
+```bash
+Node.js >= 18
+npm ou yarn
+PostgreSQL (local ou cloud) OU MongoDB
+```
+
+### Installation
+
+**1. Cloner et installer dépendances**
+```bash
+# Frontend
+cd frontend
+npm install
+
+# Backend
+cd ../backend
+npm install
+```
+
+**2. Configuration environnement**
+```bash
+# Backend .env
+DATABASE_URL="postgresql://user:password@localhost:5432/manasik_db"
+# OU MongoDB:
+# DATABASE_URL="mongodb://localhost:27017/manasik_db"
+
+JWT_SECRET="votre_secret_tres_securise_ici"
+JWT_EXPIRES_IN="7d"
+PORT=5000
+NODE_ENV="development"
+
+# Frontend .env.local
+NEXT_PUBLIC_API_URL="http://localhost:5000/api"
+```
+
+**3. Base de données**
+```bash
+# Si Prisma (PostgreSQL)
+cd backend
+npx prisma migrate dev --name init
+npx prisma db seed
+
+# Si Mongoose (MongoDB)
+npm run seed
+```
+
+**4. Lancer en développement**
+```bash
+# Terminal 1 - Backend
+cd backend
+npm run dev
+
+# Terminal 2 - Frontend
+cd frontend
+npm run dev
+```
+
+**5. Accès**
+```
+Frontend: http://localhost:3000
+Backend API: http://localhost:5000/api
+```
+
+### Comptes par défaut (après seed)
+```
+Admin:
+email: admin@manasikbayt.com
+password: Admin123!
+
+Client test:
+email: client@test.com
+password: Client123!
+```
+
+---
+
+## 📝 Scripts npm à créer
+
+### Frontend (package.json)
+```json
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  }
+}
+```
+
+### Backend (package.json)
+```json
+{
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed": "tsx prisma/seed.ts",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
+  }
+}
+```
+
+---
+
+## 🎨 Exemples de Composants Clés
+
+### OfferCard Component
+```typescript
+interface OfferCardProps {
+  offer: {
+    id: string;
+    slug: string;
+    title: string;
+    type: string;
+    level?: string;
+    prix_a_partir_de: number;
+    devise: string;
+    duree_jours: number;
+    image_principale: string;
+    depart_ville?: string;
+  };
+}
+
+// Affichage:
+// - Image avec badge type + niveau
+// - Titre
+// - Prix en grand (à partir de X€)
+// - Icônes: durée, ville départ
+// - Bouton "Voir détails" hover avec transition
+// - Effet hover: léger zoom image + shadow
+```
+
+### BookingForm Component
+```typescript
+interface BookingFormProps {
+  offerId?: string;
+  offerTitle?: string;
+  type: 'manasik' | 'touristique' | 'organise' | 'pack';
+}
+
+// Champs:
+// - Nom* (required)
+// - Prénom* (required)
+// - Email* (required, validation)
+// - Téléphone* (required, format)
+// - Nombre de personnes (select 1-10)
+// - Date souhaitée (date picker)
+// - Message (textarea)
+// - Checkbox RGPD
+// - Submit button avec loading state
+
+// Validation avec React Hook Form + Zod
+// Toast success/error après soumission
+```
+
+### FilterSidebar Component
+```typescript
+interface FilterSidebarProps {
+  filters: {
+    type?: string[];
+    level?: string[];
+    prix_max?: number;
+    duree?: number[];
+    depart_ville?: string[];
+  };
+  onFilterChange: (filters: any) => void;
+  onReset: () => void;
+}
+
+// UI:
+// - Sections collapsibles par catégorie
+// - Checkboxes pour multi-select
+// - Range slider pour prix
+// - Bouton "Réinitialiser filtres"
+// - Sur mobile: drawer qui s'ouvre
+```
+
+### ProgrammeTimeline Component
+```typescript
+interface ProgrammeTimelineProps {
+  programme: Array<{
+    jour: number;
+    titre: string;
+    description: string;
+  }>;
+}
+
+// Affichage vertical timeline:
+// - Ligne verticale continue
+// - Cercle numéroté pour chaque jour
+// - Titre jour en gras
+// - Description en texte normal
+// - Responsive: plus compact sur mobile
+```
+
+---
+
+## 🔄 Flow Utilisateur Principal
+
+### Parcours Client (Réservation)
+
+**1. Découverte**
+```
+Visiteur arrive sur homepage
+↓
+Clique "Découvrir Omra & Hajj" OU navigue menu
+↓
+Arrive sur /manasik
+```
+
+**2. Recherche & Filtrage**
+```
+Liste des offres affichée
+↓
+Applique filtres (niveau: confort, prix max: 2000€)
+↓
+Liste filtrée s'affiche
+```
+
+**3. Consultation Détail**
+```
+Clique sur "Omra Sérénité - 10 jours"
+↓
+Page détail complète s'affiche
+↓
+Lit programme, inclus/non inclus
+↓
+Scroll vers formulaire
+```
+
+**4. Demande de Devis**
+```
+Remplit formulaire contact
+↓
+Clique "Envoyer ma demande"
+↓
+Validation front (champs requis)
+↓
+POST /api/requests
+↓
+Toast success "Demande envoyée ! On vous recontacte sous 24h"
+↓
+Email confirmation envoyé (futur)
+```
+
+**5. Suivi (si compte créé)**
+```
+Client crée compte / login
+↓
+Va dans "Espace client"
+↓
+Voit sa demande avec statut "Nouveau"
+↓
+Agent traite → statut passe "En cours"
+↓
+Client reçoit notification email (futur)
+↓
+Documents disponibles au téléchargement
+```
+
+### Parcours Admin (Gestion)
+
+**1. Connexion**
+```
+Admin va sur /admin
+↓
+Redirigé vers /login si non connecté
+↓
+Login avec credentials admin
+↓
+Arrive sur dashboard admin
+```
+
+**2. Création Offre**
+```
+Dashboard → Menu "Offres" → "Créer offre"
+↓
+Formulaire complet:
+  - Infos générales (titre, type, prix...)
+  - Description (éditeur rich text)
+  - Programme (champs dynamiques jour par jour)
+  - Inclus/non inclus (liste éditable)
+  - Images (upload multiple)
+↓
+Prévisualisation
+↓
+Clique "Publier"
+↓
+POST /api/offers (avec auth admin)
+↓
+Offre créée et publiée
+```
+
+**3. Gestion Demandes**
+```
+Dashboard → Menu "Demandes"
+↓
+Tableau avec toutes les demandes
+↓
+Filtre par statut "Nouveau"
+↓
+Clique sur une demande
+↓
+Voit détail complet client + message
+↓
+Change statut → "En cours"
+↓
+Ajoute note interne: "Envoyé devis par email"
+↓
+PATCH /api/requests/:id/status
+↓
+Statut mis à jour
+```
+
+---
+
+## 🎯 Optimisations Futures (Post-MVP)
+
+### Phase 2 - Améliorations
+- [ ] Paiement en ligne (Stripe/PayPal)
+- [ ] Système de messagerie client-agent
+- [ ] Notifications email automatiques
+- [ ] Multilingue (FR/AR/EN)
+- [ ] Blog/Actualités
+- [ ] Galerie photos par destination
+- [ ] Avis clients avec modération
+- [ ] Comparateur d'offres
+- [ ] Wishlist / favoris
+- [ ] Export PDF devis/contrat
+- [ ] Calendrier disponibilités en temps réel
+
+### Phase 3 - Avancé
+- [ ] App mobile (React Native)
+- [ ] Chatbot assistance
+- [ ] Système de points fidélité
+- [ ] Parrainage
+- [ ] Intégration CRM
+- [ ] Analytics avancées
+- [ ] A/B testing
+- [ ] PWA (Progressive Web App)
+
+---
+
+## 📱 Maquettes UI (Description)
+
+### Page Accueil - Hero Section
+```
+┌────────────────────────────────────────────┐
+│  [Logo] MANASIK BAYT TRAVEL    [Menu ≡]   │
+├────────────────────────────────────────────┤
+│                                            │
+│     [Image Kaaba en background]            │
+│                                            │
+│         Voyages spirituels &               │
+│         découvertes du monde               │
+│                                            │
+│   [CTA: Omra & Hajj]  [CTA: Destinations] │
+│                                            │
+└────────────────────────────────────────────┘
+```
+
+### Carte Offre (OfferCard)
+```
+┌─────────────────────────┐
+│  [Image]                │
+│  [Badge: Omra][Premium] │
+├─────────────────────────┤
+│  Omra Sérénité         │
+│  10 jours              │
+│                         │
+│  À partir de           │
+│  1850€                 │
+│                         │
+│  ✈️ Paris | 🏨 4*     │
+│                         │
+│  [Voir détails →]      │
+└─────────────────────────┘
+```
+
+### Formulaire Demande
+```
+┌──────────────────────────┐
+│  Demander un devis       │
+├──────────────────────────┤
+│  [Input: Nom]           │
+│  [Input: Prénom]        │
+│  [Input: Email]         │
+│  [Input: Téléphone]     │
+│  [Select: Nb personnes] │
+│  [DatePicker: Date]     │
+│  [Textarea: Message]    │
+│  [Checkbox: RGPD]       │
+│  [Bouton: Envoyer]      │
+└──────────────────────────┘
+```
+
+---
+
+## 🔐 Variables d'Environnement (.env.example)
+
+### Backend
+```bash
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/manasik_db"
+
+# JWT
+JWT_SECRET="changez_moi_en_production_avec_secret_long_et_aleatoire"
+JWT_EXPIRES_IN="7d"
+
+# Server
+PORT=5000
+NODE_ENV="development"
+
+# CORS
+FRONTEND_URL="http://localhost:3000"
+
+# Email (optionnel - pour envoi confirmations)
+SMTP_HOST="smtp.gmail.com"
+SMTP_PORT=587
+SMTP_USER="votre_email@gmail.com"
+SMTP_PASSWORD="votre_mot_de_passe_app"
+EMAIL_FROM="noreply@manasikbayt.com"
+
+# Upload (si cloud storage)
+# AWS_BUCKET="manasik-uploads"
+# AWS_REGION="eu-west-3"
+# AWS_ACCESS_KEY_ID="..."
+# AWS_SECRET_ACCESS_KEY="..."
+```
+
+### Frontend
+```bash
+NEXT_PUBLIC_API_URL="http://localhost:5000/api"
+NEXT_PUBLIC_SITE_URL="http://localhost:3000"
+NEXT_PUBLIC_SITE_NAME="Manasik Bayt Travel"
+```
+
+---
+
+## 🧪 Tests (Optionnel mais Recommandé)
+
+### Tests à implémenter
+```typescript
+// Backend - Tests API
+describe('Auth API', () => {
+  test('POST /api/auth/register - should create user', async () => {
+    // Test registration
+  });
+  
+  test('POST /api/auth/login - should return JWT', async () => {
+    // Test login
+  });
+});
+
+describe('Offers API', () => {
+  test('GET /api/offers - should return offers list', async () => {
+    // Test list
+  });
+  
+  test('GET /api/offers/:id - should return offer detail', async () => {
+    // Test detail
+  });
+});
+
+// Frontend - Tests Composants
+describe('OfferCard', () => {
+  test('renders offer information correctly', () => {
+    // Test render
+  });
+});
+```
+
+---
+
+## 📚 Documentation Technique
+
+### Structure Backend Détaillée
+
+**server.ts (Point d'entrée)**
+```typescript
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import { connectDB } from './config/database';
+import authRoutes from './routes/auth.routes';
+import offerRoutes from './routes/offer.routes';
+import requestRoutes from './routes/request.routes';
+import { errorHandler } from './middlewares/error.middleware';
+
+const app = express();
+
+// Middlewares
+app.use(helmet());
+app.use(cors({ origin: process.env.FRONTEND_URL }));
+app.use(express.json());
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/offers', offerRoutes);
+app.use('/api/requests', requestRoutes);
+
+// Error handler (doit être en dernier)
+app.use(errorHandler);
+
+// Database & Start
+connectDB().then(() => {
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running on port ${process.env.PORT}`);
+  });
+});
+```
+
+**auth.middleware.ts (Authentification)**
+```typescript
+import jwt from 'jsonwebtoken';
+import { Request, Response, NextFunction } from 'express';
+
+export const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        error: { message: 'Token manquant' }
+      });
+    }
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    req.user = decoded; // Attacher user à request
+    next();
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      error: { message: 'Token invalide' }
+    });
+  }
+};
+
+export const requireRole = (roles: string[]) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        error: { message: 'Accès refusé' }
+      });
+    }
+    next();
+  };
+};
+```
+
+**error.middleware.ts (Gestion erreurs)**
+```typescript
+import { Request, Response, NextFunction } from 'express';
+
+export const errorHandler = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.error('Error:', err);
+  
+  // Erreur validation Zod
+  if (err.name === 'ZodError') {
+    return res.status(400).json({
+      success: false,
+      error: {
+        message: 'Validation échouée',
+        details: err.errors
+      }
+    });
+  }
+  
+  // Erreur par défaut
+  res.status(err.status || 500).json({
+    success: false,
+    error: {
+      message: err.message || 'Erreur serveur',
+      code: err.code
+    }
+  });
+};
+```
+
+---
+
+## 🎨 Thème Tailwind Personnalisé
+
+**tailwind.config.ts**
+```typescript
+import type { Config } from 'tailwindcss';
+
+const config: Config = {
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
+  theme: {
+    extend: {
+      colors: {
+        primary: {
+          dark: '#0F2F2A',
+          gold: '#C8AF87',
+          'gold-light': '#D4C4A3',
+          'gold-dark': '#B89D6F',
+        },
+        neutral: {
+          50: '#F5F5F0',
+          100: '#E8E8E0',
+          200: '#D1D1C1',
+          300: '#BABAA2',
+          400: '#A3A383',
+          500: '#8C8C64',
+          600: '#6B6B4D',
+          700: '#4A4A36',
+          800: '#2A2A1F',
+          900: '#1A1A14',
+        }
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        serif: ['Playfair Display', 'serif'],
+      },
+      boxShadow: {
+        'card': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+        'card-hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+      },
+    },
+  },
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
+};
+
+export default config;
+```
+
+---
+
+## ✨ Animations & Transitions
+
+**Transitions recommandées:**
+```css
+/* Boutons */
+.btn {
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Cartes offres */
+.offer-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+}
+
+.offer-card img {
+  transition: transform 0.5s ease;
+}
+
+.offer-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Navigation */
+.nav-link {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary-gold);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+```
+
+---
+
+## 📊 Dashboard Admin - Statistiques
+
+**Cartes stats à afficher:**
+```typescript
+interface DashboardStats {
+  nouvelles_demandes: number;
+  demandes_en_cours: number;
+  offres_publiees: number;
+  total_clients: number;
+  chiffre_affaire_mois?: number; // Phase 2
+}
+
+// Graphiques (Chart.js ou Recharts):
+// 1. Demandes par mois (line chart)
+// 2. Répartition par type voyage (pie chart)
+// 3. Offres les plus demandées (bar chart)
+// 4. Taux de conversion (gauge)
+```
+
+---
+
+## 🌍 Internationalisation (i18n) - Future
+
+**Structure traductions:**
+```typescript
+// locales/fr/common.json
+{
+  "nav": {
+    "home": "Accueil",
+    "manasik": "Omra & Hajj",
+    "travels": "Voyages",
+    "about": "À propos",
+    "contact": "Contact"
+  },
+  "cta": {
+    "book_now": "Réserver maintenant",
+    "request_quote": "Demander un devis",
+    "learn_more": "En savoir plus"
+  }
+}
+
+// locales/ar/common.json
+{
+  "nav": {
+    "home": "الرئيسية",
+    "manasik": "العمرة والحج",
+    // ...
+  }
+}
+```
+
+---
+
+## 📞 Informations Contact (Placeholders)
+
+**À intégrer dans le site:**
+```
+Adresse: 123 Rue Example, 75001 Paris, France
+Téléphone: +33 1 23 45 67 89
+WhatsApp: +33 6 12 34 56 78
+Email: contact@manasikbayt.com
+Email support: support@manasikbayt.com
+
+Horaires:
+Lun-Ven: 9h00 - 18h00
+Samedi: 10h00 - 16h00
+Dimanche: Fermé
+
+Réseaux sociaux (icônes à ajouter):
+- Facebook: /manasikbayt
+- Instagram: @manasikbayt
+- YouTube: /manasikbayt
+- LinkedIn: /company/manasikbayt
+```
+
+---
+
+## 🎓 Ressources & Documentation
+
+**Technologies clés:**
+- Next.js: https://nextjs.org/docs
+- TypeScript: https://www.typescriptlang.org/docs
+- Tailwind: https://tailwindcss.com/docs
+- Prisma: https://www.prisma.io/docs
+- Express: https://expressjs.com
+- React Hook Form: https://react-hook-form.com
+- Zod: https://zod.dev
+
+**Inspiration design:**
+- Omra sites: rechercher "omra luxury travel website"
+- Travel agencies: Booking.com, Airbnb (structure)
+- Islamic aesthetics: patterns géométriques subtils
+
+---
+
+## 🚀 Déploiement Production
+
+### Frontend (Vercel)
+```bash
+# Connecter repo GitHub
+# Configurer variables d'environnement dans Vercel dashboard
+# Auto-deploy sur push main branch
+
+Variables nécessaires:
+NEXT_PUBLIC_API_URL=https://api.manasikbayt.com/api
+NEXT_PUBLIC_SITE_URL=https://manasikbayt.com
+```
+
+### Backend (Render / Railway)
+```bash
+# Créer service web
+# Configurer variables d'environnement
+# Connecter à base de données managed
+
+Variables nécessaires:
+DATABASE_URL=postgresql://...
+JWT_SECRET=...
+FRONTEND_URL=https://manasikbayt.com
+NODE_ENV=production
+```
+
+### Base de données
+```
+Recommandations:
+- Supabase (PostgreSQL managed, gratuit jusqu'à 500MB)
+- Railway (PostgreSQL, simple)
+- MongoDB Atlas (gratuit jusqu'à 512MB)
+```
+
+---
+
+## 🎬 Conclusion & Prochaines Étapes
+
+**Ce que vous devez générer:**
+
+1. ✅ **Projet complet fonctionnel**
+   - Structure dossiers respectée
+   - Tous les fichiers de configuration
+   - Modèles de données implémentés
+   - Routes API complètes
+   - Pages frontend avec composants
+
+2. ✅ **Code production-ready**
+   - TypeScript strict
+   - Gestion d'erreurs robuste
+   - Validation des données
+   - Sécurité (auth, CORS, sanitization)
+
+3. ✅ **UI/UX moderne**
+   - Design responsive
+   - Composants réutilisables
+   - Animations subtiles
+   - Accessibilité (a11y basics)
+
+4. ✅ **Documentation**
+   - README avec instructions
+   - Commentaires dans code complexe
+   - .env.example complet
+
+**Après génération, je pourrai:**
+- Lancer projet localement en 5 minutes
+- Personnaliser contenus et textes
+- Ajouter vraies images
+- Configurer domaine et déployer
+- Itérer sur design et features
+
+---
+
+## 🙏 Merci !
+
+Génère maintenant le boilerplate complet selon ces spécifications. Focus sur un code propre, maintenable et prêt à être étendu.
