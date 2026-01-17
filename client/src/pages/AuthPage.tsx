@@ -51,7 +51,7 @@ export default function AuthPage() {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <img
-                    src="https://images.unsplash.com/photo-1591604129939-f1efa3d9f7fa?q=80&w=2000&auto=format&fit=crop"
+                    src="/login-background.gif"
                     alt="Travel Background"
                     className="w-full h-full object-cover"
                 />
@@ -106,8 +106,8 @@ export default function AuthPage() {
                             <button
                                 onClick={() => setActiveTab('login')}
                                 className={`flex-1 py-3 rounded-xl transition-all duration-300 text-sm font-bold uppercase tracking-wider ${activeTab === 'login'
-                                        ? 'bg-[#d4af7a] text-white shadow-lg'
-                                        : 'text-white/60 hover:text-white'
+                                    ? 'bg-[#d4af7a] text-white shadow-lg'
+                                    : 'text-white/60 hover:text-white'
                                     }`}
                             >
                                 Se connecter
@@ -115,8 +115,8 @@ export default function AuthPage() {
                             <button
                                 onClick={() => setActiveTab('signup')}
                                 className={`flex-1 py-3 rounded-xl transition-all duration-300 text-sm font-bold uppercase tracking-wider ${activeTab === 'signup'
-                                        ? 'bg-[#d4af7a] text-white shadow-lg'
-                                        : 'text-white/60 hover:text-white'
+                                    ? 'bg-[#d4af7a] text-white shadow-lg'
+                                    : 'text-white/60 hover:text-white'
                                     }`}
                             >
                                 S'inscrire
