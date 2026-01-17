@@ -13,45 +13,50 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative h-[90vh] flex items-center justify-center overflow-hidden">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
-          {/* Unsplash: Mosque sunset spiritual landscape */}
-          <img 
-            src="https://images.unsplash.com/photo-1565552629477-094c08dff745?q=80&w=3000&auto=format&fit=crop" 
-            alt="Hero Background" 
-            className="w-full h-full object-cover"
+      <section className="relative h-[90vh] flex items-start justify-center overflow-hidden pt-8">
+        {/* Animated Background with Overlay */}
+        <div className="absolute inset-0 z-0 bg-primary/95">
+          <img
+            src="/hero-background.gif"
+            alt="Hero Background"
+            className="w-full h-full object-contain md:object-cover object-center"
           />
-          <div className="absolute inset-0 bg-primary/40 backdrop-blur-[2px]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent opacity-90" />
+          <div className="absolute inset-0 bg-primary/10 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent" />
         </div>
 
-        <div className="container relative z-10 px-4 text-center">
-          <motion.div 
+        <div className="container relative z-10 px-4 text-center mt-2 flex flex-col h-full justify-between pb-24">
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-4xl mx-auto space-y-8"
+            className="max-w-4xl mx-auto space-y-6"
           >
-            <h1 className="text-5xl md:text-7xl font-serif font-bold text-white leading-tight">
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight drop-shadow-2xl">
               {t("hero.title")}
             </h1>
-            <p className="text-xl md:text-2xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-lg">
               {t("hero.subtitle")}
             </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
-              <Link href="/omra">
-                <Button size="lg" className="bg-gold hover:bg-gold/90 text-primary-foreground min-w-[200px] h-14 text-lg font-semibold rounded-full shadow-xl shadow-gold/20">
-                  {t("hero.cta.omra")}
-                </Button>
-              </Link>
-              <Link href="/travel">
-                <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/30 backdrop-blur-md min-w-[200px] h-14 text-lg font-semibold rounded-full">
-                  {t("hero.cta.tours")}
-                </Button>
-              </Link>
-            </div>
+          </motion.div>
+
+          {/* CTA Buttons at Bottom */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 pt-12"
+          >
+            <Link href="/omra">
+              <Button size="lg" className="bg-gold hover:bg-gold/90 text-primary-foreground min-w-[220px] h-14 text-lg font-semibold rounded-full shadow-2xl shadow-gold/30 transition-transform hover:scale-105 active:scale-95">
+                {t("hero.cta.omra")}
+              </Button>
+            </Link>
+            <Link href="/travel">
+              <Button size="lg" variant="outline" className="bg-white/10 hover:bg-white/20 text-white border-white/40 backdrop-blur-xl min-w-[220px] h-14 text-lg font-semibold rounded-full transition-transform hover:scale-105 active:scale-95">
+                {t("hero.cta.tours")}
+              </Button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -65,7 +70,7 @@ export default function Home() {
               { icon: Shield, title: "Secure Booking", desc: "Full protection and transparent pricing with no hidden fees." },
               { icon: Plane, title: "Global Coverage", desc: "From spiritual journeys to world exploration, we cover it all." },
             ].map((item, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -101,9 +106,9 @@ export default function Home() {
 
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-               {[1,2,3].map(i => (
-                 <div key={i} className="h-[400px] bg-muted animate-pulse rounded-xl" />
-               ))}
+              {[1, 2, 3].map(i => (
+                <div key={i} className="h-[400px] bg-muted animate-pulse rounded-xl" />
+              ))}
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -139,22 +144,22 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-            
+
             <div className="lg:w-1/2">
-               {/* Video Placeholder */}
-               <div className="relative aspect-video rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10 shadow-2xl group cursor-pointer">
-                 {/* Unsplash: Man using phone in airport */}
-                 <img 
-                   src="https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?q=80&w=2000&auto=format&fit=crop" 
-                   alt="eSIM usage" 
-                   className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity" 
-                 />
-                 <div className="absolute inset-0 flex items-center justify-center">
-                   <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform">
-                     <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1" />
-                   </div>
-                 </div>
-               </div>
+              {/* Video Placeholder */}
+              <div className="relative aspect-video rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10 shadow-2xl group cursor-pointer">
+                {/* Unsplash: Man using phone in airport */}
+                <img
+                  src="https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?q=80&w=2000&auto=format&fit=crop"
+                  alt="eSIM usage"
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

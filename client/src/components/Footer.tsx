@@ -11,11 +11,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand */}
           <div className="space-y-6">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gold rounded-lg flex items-center justify-center">
-                <span className="text-primary font-serif font-bold text-xl">M</span>
-              </div>
-              <span className="font-serif font-bold text-2xl text-gold">Manasik Bayt</span>
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo.jpeg"
+                alt="Manasik Bayt Travel"
+                className="h-12 w-auto object-contain"
+              />
             </div>
             <p className="text-primary-foreground/70 text-sm leading-relaxed">
               Your trusted partner for spiritual journeys and world exploration. We combine luxury, comfort, and spirituality.
@@ -34,7 +35,8 @@ export default function Footer() {
               <li><Link href="/omra" className="text-primary-foreground/70 hover:text-gold transition-colors text-sm">Omra & Hajj</Link></li>
               <li><Link href="/travel" className="text-primary-foreground/70 hover:text-gold transition-colors text-sm">International Travel</Link></li>
               <li><Link href="/packs" className="text-primary-foreground/70 hover:text-gold transition-colors text-sm">Packages</Link></li>
-              <li><Link href="/about" className="text-primary-foreground/70 hover:text-gold transition-colors text-sm">About Us</Link></li>
+              <li><Link href="/services" className="text-primary-foreground/70 hover:text-gold transition-colors text-sm">{t("nav.services")}</Link></li>
+              <li><Link href="/contact" className="text-primary-foreground/70 hover:text-gold transition-colors text-sm">{t("nav.contact")}</Link></li>
             </ul>
           </div>
 

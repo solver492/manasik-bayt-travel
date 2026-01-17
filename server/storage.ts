@@ -6,13 +6,13 @@ import {
   type Content, type CreateBookingRequest,
   type UpdateBookingStatusRequest
 } from "@shared/schema";
-import { db } from "./db";
+// import { db } from "./db"; // Removed to prevent DB connection requirement
 import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   // Auth & Users
   getUser(id: number): Promise<User | undefined>;
-  getUserByReplitId(replitId: string): Promise<User | undefined>;
+  getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUserPoints(userId: number, points: number): Promise<User>;
 
@@ -31,97 +31,136 @@ export interface IStorage {
   createContent(item: typeof content.$inferInsert): Promise<Content>;
 }
 
-export class DatabaseStorage implements IStorage {
-  // === USERS ===
-  async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user;
+export class MemStorage implements IStorage {
+  private users: Map<number, User>;
+  private offers: Map<number, Offer>;
+  private bookings: Map<number, Booking>;
+  private content: Map<number, Content>;
+  private currentId: number;
+
+  constructor() {
+    this.users = new Map();
+    this.offers = new Map();
+    this.bookings = new Map();
+    this.content = new Map();
+    this.currentId = 1;
   }
 
-  async getUserByReplitId(replitId: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.replitId, replitId));
-    return user;
+  // === USERS ===
+  async getUser(id: number): Promise<User | undefined> {
+    return this.users.get(id);
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    return Array.from(this.users.values()).find(
+      (user) => user.username === username,
+    );
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db.insert(users).values(insertUser).returning();
+    const id = this.currentId++;
+    const user: User = {
+      ...insertUser,
+      id,
+      points: 0,
+      level: "bronze",
+      createdAt: new Date(),
+      email: insertUser.email || null,
+    };
+    this.users.set(id, user);
     return user;
   }
 
   async updateUserPoints(userId: number, points: number): Promise<User> {
-    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    const user = await this.getUser(userId);
     if (!user) throw new Error("User not found");
 
-    // Simple level logic
     const newPoints = user.points + points;
-    let newLevel = "bronze";
+    let newLevel: "bronze" | "silver" | "gold" | "platinum" = "bronze";
     if (newPoints > 500) newLevel = "silver";
     if (newPoints > 1000) newLevel = "gold";
     if (newPoints > 5000) newLevel = "platinum";
 
-    const [updatedUser] = await db
-      .update(users)
-      .set({ points: newPoints, level: newLevel as any })
-      .where(eq(users.id, userId))
-      .returning();
+    const updatedUser: User = { ...user, points: newPoints, level: newLevel };
+    this.users.set(userId, updatedUser);
     return updatedUser;
   }
 
   // === OFFERS ===
-  async getOffers(filter?: { type?: string; featured?: boolean }): Promise<Offer[]> {
-    let query = db.select().from(offers);
+  async getOffers(filter?: {
+    type?: string;
+    featured?: boolean;
+  }): Promise<Offer[]> {
+    let allOffers = Array.from(this.offers.values());
 
     if (filter?.type) {
-      query.where(eq(offers.type, filter.type as any));
+      allOffers = allOffers.filter((o) => o.type === filter.type);
     }
     if (filter?.featured) {
-      query.where(eq(offers.isFeatured, true));
+      allOffers = allOffers.filter((o) => o.isFeatured === true);
     }
 
-    return await query.orderBy(desc(offers.createdAt));
+    // Sort desc by createdAt (simulated by id for now or date if available)
+    return allOffers.sort((a, b) => (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0));
   }
 
   async getOffer(id: number): Promise<Offer | undefined> {
-    const [offer] = await db.select().from(offers).where(eq(offers.id, id));
-    return offer;
+    return this.offers.get(id);
   }
 
   async createOffer(insertOffer: InsertOffer): Promise<Offer> {
-    const [offer] = await db.insert(offers).values(insertOffer).returning();
+    const id = this.currentId++;
+    const offer: Offer = {
+      ...insertOffer,
+      id,
+      createdAt: new Date(),
+    };
+    this.offers.set(id, offer);
     return offer;
   }
 
   // === BOOKINGS ===
   async createBooking(insertBooking: InsertBooking): Promise<Booking> {
-    const [booking] = await db.insert(bookings).values(insertBooking).returning();
+    const id = this.currentId++;
+    const booking: Booking = {
+      ...insertBooking,
+      id,
+      createdAt: new Date(),
+      status: "pending", // Default status
+    };
+    this.bookings.set(id, booking);
     return booking;
   }
 
   async getBookingsByUser(userId: number): Promise<Booking[]> {
-    return await db.select().from(bookings).where(eq(bookings.userId, userId)).orderBy(desc(bookings.createdAt));
+    return Array.from(this.bookings.values())
+      .filter((b) => b.userId === userId)
+      .sort((a, b) => (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0));
   }
 
   async updateBookingStatus(id: number, status: string): Promise<Booking> {
-    const [booking] = await db
-      .update(bookings)
-      .set({ status: status as any })
-      .where(eq(bookings.id, id))
-      .returning();
-    return booking;
+    const booking = this.bookings.get(id);
+    if (!booking) throw new Error("Booking not found");
+    const updated = { ...booking, status };
+    this.bookings.set(id, updated);
+    return updated;
   }
 
   // === CONTENT ===
   async getContent(category?: string): Promise<Content[]> {
+    let items = Array.from(this.content.values());
     if (category) {
-      return await db.select().from(content).where(eq(content.category, category as any));
+      items = items.filter((c) => c.category === category);
     }
-    return await db.select().from(content);
+    return items;
   }
 
   async createContent(item: typeof content.$inferInsert): Promise<Content> {
-    const [newItem] = await db.insert(content).values(item).returning();
+    const id = this.currentId++;
+    const newItem: Content = { ...item, id, createdAt: new Date() };
+    this.content.set(id, newItem);
     return newItem;
   }
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new MemStorage();

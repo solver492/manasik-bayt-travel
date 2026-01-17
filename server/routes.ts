@@ -1,51 +1,9 @@
 import type { Express } from "express";
 import type { Server } from "http";
-import { setupAuth } from "./replit_integrations/auth";
+import { setupAuth, isAuthenticated } from "./auth";
 import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
-import { users } from "@shared/schema";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
-
-// Overwrite the Replit Auth storage adapter to use our main storage
-// This is necessary because we have a custom Users table with gamification fields
-import { authStorage } from "./replit_integrations/auth/storage";
-
-authStorage.getUser = async (id: string) => {
-  // Map Replit Auth ID (string) to our User ID (int)
-  // We store the replit ID in the 'replitId' column
-  const [user] = await db.select().from(users).where(eq(users.replitId, id));
-  if (!user) return undefined;
-  // Adapter needs to return an object matching the auth schema, but we can return our user object
-  // as long as we handle the type mismatch or ensure compatibility.
-  // The Replit Auth module expects {id: string, ...}. Our ID is number.
-  // We will cast it for the auth module's specific needs or better yet:
-  // We will let the auth module use its own table for "session/auth" tracking if strictly needed,
-  // BUT we really want to link it to our main user.
-  
-  // SIMPLIFICATION:
-  // We will use the 'replitId' as the link. 
-  // When 'upsertUser' is called by the auth module, we create/update our main user.
-  return user as any; 
-};
-
-authStorage.upsertUser = async (userData: any) => {
-  const existing = await storage.getUserByReplitId(userData.id);
-  if (existing) {
-    return existing as any;
-  }
-  
-  const newUser = await storage.createUser({
-    replitId: userData.id,
-    username: userData.username || userData.email?.split('@')[0] || "User",
-    email: userData.email,
-    role: "client",
-    language: "fr"
-  });
-  return newUser as any;
-};
-
 
 export async function registerRoutes(
   httpServer: Server,
@@ -55,12 +13,59 @@ export async function registerRoutes(
   await setupAuth(app);
 
   // 2. Register API Routes
-  
+
   // Auth Me (Custom wrapper to return full profile with points)
   app.get(api.auth.me.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.json(null);
-    const user = await storage.getUserByReplitId((req.user as any).id); // Replit Auth ID
+    const user = await storage.getUser((req.user as any).id);
     res.json(user || null);
+  });
+
+  // Local Login
+  app.post("/api/login", async (req, res) => {
+    const { username, password } = req.body;
+    const user = await storage.getUserByUsername(username);
+
+    // Simple password check for prototype
+    if (!user || user.password !== password) {
+      return res.status(401).json({ message: "Identifiants invalides" });
+    }
+
+    req.login(user, (err) => {
+      if (err) return res.status(500).json({ message: "Erreur de session" });
+      res.json(user);
+    });
+  });
+
+  // Local Register
+  app.post("/api/register", async (req, res) => {
+    const { username, email, password } = req.body;
+
+    const existing = await storage.getUserByUsername(username);
+    if (existing) {
+      return res.status(400).json({ message: "Cet utilisateur existe déjà" });
+    }
+
+    const user = await storage.createUser({
+      username,
+      email,
+      password, // In real app, hash this!
+      role: "client",
+      language: "fr"
+    });
+
+    req.login(user, (err) => {
+      if (err) return res.status(500).json({ message: "Erreur de session" });
+      res.json(user);
+    });
+  });
+
+  // Logout
+  app.post("/api/logout", (req, res) => {
+    req.logout((err) => {
+      if (err) return res.status(500).json({ message: "Erreur lors de la déconnexion" });
+      res.json({ message: "Déconnexion réussie" });
+    });
   });
 
   // Offers
@@ -93,16 +98,16 @@ export async function registerRoutes(
   // Bookings
   app.post(api.bookings.create.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Unauthorized" });
-    
+
     try {
       const input = api.bookings.create.input.parse(req.body);
       const booking = await storage.createBooking(input);
-      
+
       // Gamification: Award 100 points for a booking
       if (input.userId) {
         await storage.updateUserPoints(input.userId, 100);
       }
-      
+
       res.status(201).json(booking);
     } catch (e) {
       res.status(400).json({ message: "Validation failed" });
@@ -111,9 +116,9 @@ export async function registerRoutes(
 
   app.get(api.bookings.listMyBookings.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.status(401).json({ message: "Unauthorized" });
-    const user = await storage.getUserByReplitId((req.user as any).id);
+    const user = await storage.getUser((req.user as any).id);
     if (!user) return res.status(404).json({ message: "User not found" });
-    
+
     const bookings = await storage.getBookingsByUser(user.id);
     res.json(bookings);
   });
@@ -253,7 +258,7 @@ async function seedDatabase() {
     await storage.createContent({
       title: "Guide du Pèlerin: Ihram",
       category: "guide",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ", 
+      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
       description: "Les étapes essentielles de l'Ihram pour un pèlerinage réussi."
     });
   }

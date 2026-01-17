@@ -9,6 +9,11 @@ import Home from "@/pages/Home";
 import OffersList from "@/pages/OffersList";
 import OfferDetails from "@/pages/OfferDetails";
 import Dashboard from "@/pages/Dashboard";
+import Contact from "@/pages/Contact";
+import Services from "@/pages/Services";
+import AuthPage from "@/pages/AuthPage";
+import HotelService from "@/pages/services/Hotel";
+import CarRentService from "@/pages/services/CarRent";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -24,6 +29,11 @@ function Router() {
           <Route path="/packs" component={OffersList} />
           <Route path="/offer/:id" component={OfferDetails} />
           <Route path="/dashboard" component={Dashboard} />
+          <Route path="/contact" component={Contact} />
+          <Route path="/services" component={Services} />
+          <Route path="/auth" component={AuthPage} />
+          <Route path="/services/hotel" component={HotelService} />
+          <Route path="/services/car-rent" component={CarRentService} />
           <Route component={NotFound} />
         </Switch>
       </main>

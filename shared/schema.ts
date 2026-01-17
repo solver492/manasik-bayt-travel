@@ -7,8 +7,8 @@ import { z } from "zod";
 // Users table with Gamification fields
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  replitId: text("replit_id").unique(), // For Replit Auth
-  username: text("username").notNull(),
+  username: text("username").notNull().unique(),
+  password: text("password"), // Hash stored for local login
   email: text("email"),
   role: text("role", { enum: ["client", "agent", "admin"] }).default("client").notNull(),
   points: integer("points").default(0).notNull(),
@@ -25,7 +25,7 @@ export const offers = pgTable("offers", {
   type: text("type", { enum: ["manasik", "touristique", "organise", "pack"] }).notNull(),
   subtype: text("subtype"), // e.g., 'omra', 'hajj'
   description: text("description").notNull(),
-  program: jsonb("program").$type<Array<{day: number, title: string, desc: string}>>().notNull(),
+  program: jsonb("program").$type<Array<{ day: number, title: string, desc: string }>>().notNull(),
   price: integer("price").notNull(), // In base currency (e.g., MAD or EUR cents)
   currency: text("currency").default("MAD").notNull(),
   durationDays: integer("duration_days").notNull(),
