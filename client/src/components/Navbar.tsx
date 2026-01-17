@@ -243,9 +243,11 @@ export default function Navbar() {
                 <Button variant="outline" size="sm">{t("nav.dashboard")}</Button>
               </Link>
             ) : (
-              <Button asChild size="sm" className="bg-primary text-white">
-                <a href="/api/login">{t("auth.login")}</a>
-              </Button>
+              <Link href="/auth">
+                <Button size="sm" className="bg-primary text-white">
+                  {t("auth.login")}
+                </Button>
+              </Link>
             )}
           </div>
         </div>

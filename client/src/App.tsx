@@ -32,6 +32,7 @@ function Router() {
           <Route path="/contact" component={Contact} />
           <Route path="/services" component={Services} />
           <Route path="/auth" component={AuthPage} />
+          <Route path="/login" component={AuthPage} />
           <Route path="/services/hotel" component={HotelService} />
           <Route path="/services/car-rent" component={CarRentService} />
           <Route component={NotFound} />
