@@ -14,6 +14,11 @@ import Services from "@/pages/Services";
 import AuthPage from "@/pages/AuthPage";
 import HotelService from "@/pages/services/Hotel";
 import CarRentService from "@/pages/services/CarRent";
+import AdminDashboard from "@/pages/admin/Dashboard";
+import AdminClients from "@/pages/admin/Clients";
+import AdminBookings from "@/pages/admin/Bookings";
+import AdminOffers from "@/pages/admin/Offers";
+import AdminCreateOffer from "@/pages/admin/CreateOffer";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -33,8 +38,17 @@ function Router() {
           <Route path="/services" component={Services} />
           <Route path="/auth" component={AuthPage} />
           <Route path="/login" component={AuthPage} />
+
           <Route path="/services/hotel" component={HotelService} />
           <Route path="/services/car-rent" component={CarRentService} />
+
+          {/* Admin Routes */}
+          <Route path="/admin" component={AdminDashboard} />
+          <Route path="/admin/clients" component={AdminClients} />
+          <Route path="/admin/bookings" component={AdminBookings} />
+          <Route path="/admin/offers" component={AdminOffers} />
+          <Route path="/admin/offers/new" component={AdminCreateOffer} />
+
           <Route component={NotFound} />
         </Switch>
       </main>

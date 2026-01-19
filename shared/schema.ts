@@ -4,17 +4,34 @@ import { z } from "zod";
 
 // === TABLE DEFINITIONS ===
 
-// Users table with Gamification fields
+// Users table with Gamification and Social Auth fields
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  password: text("password"), // Hash stored for local login
-  email: text("email"),
+  username: text("username").unique(), // Optional if using email
+  password: text("password"), // Hash stored for local login, null for social
+  email: text("email").unique().notNull(),
+  firstName: text("first_name"),
+  lastName: text("last_name"),
+  phone: text("phone"),
   role: text("role", { enum: ["client", "agent", "admin"] }).default("client").notNull(),
+
+  // Social Auth IDs
+  googleId: text("google_id"),
+  facebookId: text("facebook_id"),
+
+  // Gamification
   points: integer("points").default(0).notNull(),
   level: text("level", { enum: ["bronze", "silver", "gold", "platinum"] }).default("bronze").notNull(),
   language: text("language", { enum: ["fr", "ar", "en"] }).default("fr").notNull(),
+
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Session Store (for connect-pg-simple)
+export const session = pgTable("session", {
+  sid: text("sid").primaryKey(),
+  sess: jsonb("sess").notNull(),
+  expire: timestamp("expire").notNull(),
 });
 
 // Travel Offers
@@ -22,7 +39,7 @@ export const offers = pgTable("offers", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   slug: text("slug").unique().notNull(),
-  type: text("type", { enum: ["manasik", "touristique", "organise", "pack"] }).notNull(),
+  type: text("type", { enum: ["manasik", "touristique", "organise", "pack", "hotel", "car_rental"] }).notNull(),
   subtype: text("subtype"), // e.g., 'omra', 'hajj'
   description: text("description").notNull(),
   program: jsonb("program").$type<Array<{ day: number, title: string, desc: string }>>().notNull(),

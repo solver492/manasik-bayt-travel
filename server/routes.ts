@@ -39,17 +39,20 @@ export async function registerRoutes(
 
   // Local Register
   app.post("/api/register", async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, email, password, firstName, lastName, phone } = req.body;
 
-    const existing = await storage.getUserByUsername(username);
+    const existing = await storage.getUserByUsername(username) || await storage.getUserByEmail(email);
     if (existing) {
-      return res.status(400).json({ message: "Cet utilisateur existe déjà" });
+      return res.status(400).json({ message: "Cet utilisateur ou email existe déjà" });
     }
 
     const user = await storage.createUser({
       username,
       email,
       password, // In real app, hash this!
+      firstName,
+      lastName,
+      phone,
       role: "client",
       language: "fr"
     });
@@ -68,6 +71,48 @@ export async function registerRoutes(
     });
   });
 
+  function isAdmin(req: any, res: any, next: any) {
+    if (req.isAuthenticated() && req.user.role === 'admin') {
+      return next();
+    }
+    return res.status(403).json({ message: "Accès refusé" });
+  }
+
+  // === ADMIN ROUTES ===
+  app.get("/api/admin/clients", isAdmin, async (req, res) => {
+    const clients = await storage.getClients();
+    res.json(clients);
+  });
+
+  app.get("/api/admin/bookings", isAdmin, async (req, res) => {
+    const bookings = await storage.getAllBookings();
+    res.json(bookings);
+  });
+
+  app.post("/api/admin/offers", isAdmin, async (req, res) => {
+    try {
+      const input = api.offers.create.input.parse(req.body);
+      const offer = await storage.createOffer(input);
+      res.status(201).json(offer);
+    } catch (e: any) {
+      res.status(400).json({ message: e.message || "Invalid input" });
+    }
+  });
+
+  app.patch("/api/admin/offers/:id", isAdmin, async (req, res) => {
+    try {
+      const offer = await storage.updateOffer(Number(req.params.id), req.body);
+      res.json(offer);
+    } catch (e: any) {
+      res.status(400).json({ message: "Error updating offer" });
+    }
+  });
+
+  app.delete("/api/admin/offers/:id", isAdmin, async (req, res) => {
+    await storage.deleteOffer(Number(req.params.id));
+    res.status(204).end();
+  });
+
   // Offers
   app.get(api.offers.list.path, async (req, res) => {
     const filters = {
@@ -84,16 +129,17 @@ export async function registerRoutes(
     res.json(offer);
   });
 
-  app.post(api.offers.create.path, async (req, res) => {
-    // Only admins should create offers (skipped auth check for simplicity in prototype)
-    try {
-      const input = api.offers.create.input.parse(req.body);
-      const offer = await storage.createOffer(input);
-      res.status(201).json(offer);
-    } catch (e) {
-      res.status(400).json({ message: "Invalid input" });
-    }
-  });
+  // Public Create Offer commented out - use Admin Create
+  // app.post(api.offers.create.path, async (req, res) => {
+  //   // Only admins should create offers (skipped auth check for simplicity in prototype)
+  //   try {
+  //     const input = api.offers.create.input.parse(req.body);
+  //     const offer = await storage.createOffer(input);
+  //     res.status(201).json(offer);
+  //   } catch (e) {
+  //     res.status(400).json({ message: "Invalid input" });
+  //   }
+  // });
 
   // Bookings
   app.post(api.bookings.create.path, async (req, res) => {

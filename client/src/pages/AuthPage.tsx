@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Lock, Eye, EyeOff, Mail } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, Mail, Phone } from 'lucide-react';
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { useToast } from "@/hooks/use-toast";
@@ -11,6 +11,9 @@ export default function AuthPage() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [phone, setPhone] = useState('');
 
     const { login, register, user, isLoggingIn, isRegistering } = useAuth();
     const [, setLocation] = useLocation();
@@ -29,7 +32,7 @@ export default function AuthPage() {
                 await login({ username, password });
                 toast({ title: "Connexion réussie", description: "Bon retour parmi nous !" });
             } else {
-                await register({ username, email, password });
+                await register({ username, email, password, firstName, lastName, phone });
                 toast({ title: "Compte créé", description: "Bienvenue chez Manasik Bayt Travel !" });
             }
         } catch (error: any) {
@@ -148,21 +151,58 @@ export default function AuthPage() {
 
                                 {/* Email Field (Signup only) */}
                                 {activeTab === 'signup' && (
-                                    <motion.div
-                                        initial={{ opacity: 0, height: 0 }}
-                                        animate={{ opacity: 1, height: 'auto' }}
-                                        className="group relative"
-                                    >
-                                        <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50 group-focus-within:text-gold transition-colors w-5 h-5" />
-                                        <input
-                                            type="email"
-                                            value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Email"
-                                            className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#d4af7a] focus:bg-white/20 transition-all font-medium"
-                                            required
-                                        />
-                                    </motion.div>
+                                    <>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="group relative">
+                                                <input
+                                                    type="text"
+                                                    value={firstName}
+                                                    onChange={(e) => setFirstName(e.target.value)}
+                                                    placeholder="Prénom"
+                                                    className="w-full px-4 py-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#d4af7a] focus:bg-white/20 transition-all font-medium"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="group relative">
+                                                <input
+                                                    type="text"
+                                                    value={lastName}
+                                                    onChange={(e) => setLastName(e.target.value)}
+                                                    placeholder="Nom"
+                                                    className="w-full px-4 py-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#d4af7a] focus:bg-white/20 transition-all font-medium"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="group relative">
+                                            <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50 group-focus-within:text-gold transition-colors w-5 h-5" />
+                                            <input
+                                                type="tel"
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value)}
+                                                placeholder="Téléphone"
+                                                className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#d4af7a] focus:bg-white/20 transition-all font-medium"
+                                                required
+                                            />
+                                        </div>
+
+                                        <motion.div
+                                            initial={{ opacity: 0, height: 0 }}
+                                            animate={{ opacity: 1, height: 'auto' }}
+                                            className="group relative"
+                                        >
+                                            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/50 group-focus-within:text-gold transition-colors w-5 h-5" />
+                                            <input
+                                                type="email"
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                placeholder="Email"
+                                                className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/10 rounded-2xl text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-[#d4af7a] focus:bg-white/20 transition-all font-medium"
+                                                required
+                                            />
+                                        </motion.div>
+                                    </>
                                 )}
 
                                 {/* Password Field */}
