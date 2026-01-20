@@ -14,7 +14,14 @@ export async function registerRoutes(
 
   // 2. Register API Routes
 
-  // Auth Me (Custom wrapper to return full profile with points)
+  // Auth Me (Custom wrapper to return full profile)
+  app.get("/api/auth/user", async (req, res) => {
+    if (!req.isAuthenticated()) return res.json(null);
+    const user = await storage.getUser((req.user as any).id);
+    console.log(`Auth check for ${user?.username}: role=${user?.role}`);
+    res.json(user || null);
+  });
+
   app.get(api.auth.me.path, async (req, res) => {
     if (!req.isAuthenticated()) return res.json(null);
     const user = await storage.getUser((req.user as any).id);
@@ -72,8 +79,14 @@ export async function registerRoutes(
   });
 
   function isAdmin(req: any, res: any, next: any) {
-    if (req.isAuthenticated() && req.user.role === 'admin') {
-      return next();
+    if (req.isAuthenticated()) {
+      console.log(`isAdmin check: user=${req.user.username}, role=${req.user.role}`);
+      if (req.user.role === 'admin') {
+        return next();
+      }
+      console.log(`isAdmin check FAILED: role is ${req.user.role}, not admin`);
+    } else {
+      console.log("isAdmin check FAILED: Not authenticated");
     }
     return res.status(403).json({ message: "Accès refusé" });
   }

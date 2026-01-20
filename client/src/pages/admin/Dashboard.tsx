@@ -7,12 +7,19 @@ import { useAuth } from "@/hooks/use-auth";
 
 export default function AdminDashboard() {
     const { user, logout } = useAuth();
-    const { data: clients } = useQuery<any[]>({ queryKey: ["/api/admin/clients"] });
-    const { data: bookings } = useQuery<any[]>({ queryKey: ["/api/admin/bookings"] });
-    // const { data: offers } = useQuery<any[]>({ queryKey: ["/api/offers"] }); // Use public offers endpoint or admin specific if added
+    const { data: clients, isLoading: clientsLoading } = useQuery<any[]>({ queryKey: ["/api/admin/clients"] });
+    const { data: bookings, isLoading: bookingsLoading } = useQuery<any[]>({ queryKey: ["/api/admin/bookings"] });
+
+    console.log("AdminDashboard Auth State:", { user, role: user?.role });
 
     if (!user || user.role !== 'admin') {
-        return <div className="p-8 text-center text-red-500">Accès refusé. Vous devez être administrateur.</div>;
+        return (
+            <div className="p-8 text-center flex flex-col items-center gap-4">
+                <div className="text-red-500 font-bold">Accès refusé. Vous devez être administrateur.</div>
+                <div className="text-sm text-gray-500">Rôle actuel: {user?.role || "Non connecté"}</div>
+                <Button onClick={() => window.location.href = "/auth"}>Retour à la connexion</Button>
+            </div>
+        );
     }
 
     return (
