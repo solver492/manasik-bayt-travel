@@ -14,15 +14,17 @@ export function getSession() {
   return session({
     store: new PgSession({
       pool,
-      tableName: 'session' // Use the table we defined in schema/sql
+      tableName: 'session'
     }),
     secret: process.env.SESSION_SECRET || "dev-secret-change-in-production",
     resave: false,
     saveUninitialized: false,
+    proxy: true, // Required for secure cookies behind a proxy (Hostinger/cPanel)
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production", // Enable secure cookies in production
       maxAge: sessionTtl,
+      sameSite: 'lax'
     },
   });
 }

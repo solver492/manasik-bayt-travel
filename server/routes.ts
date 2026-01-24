@@ -30,18 +30,39 @@ export async function registerRoutes(
 
   // Local Login
   app.post("/api/login", async (req, res) => {
-    const { username, password } = req.body;
-    const user = await storage.getUserByUsername(username);
+    try {
+      const { username, password } = req.body;
+      console.log(`Login attempt: identifier=${username}`);
 
-    // Simple password check for prototype
-    if (!user || user.password !== password) {
-      return res.status(401).json({ message: "Identifiants invalides" });
+      // Try by username first, then by email
+      let user = await storage.getUserByUsername(username);
+      if (!user) {
+        user = await storage.getUserByEmail(username);
+      }
+
+      if (!user) {
+        console.log(`Login failed: user matching ${username} not found`);
+        return res.status(401).json({ message: "Identifiants invalides (Utilisateur non trouvé)" });
+      }
+
+      // Simple password check for prototype
+      if (user.password !== password) {
+        console.log(`Login failed: incorrect password for ${user.username}`);
+        return res.status(401).json({ message: "Identifiants invalides (Mot de passe incorrect)" });
+      }
+
+      req.login(user, (err) => {
+        if (err) {
+          console.error("Login session error:", err);
+          return res.status(500).json({ message: "Erreur de session" });
+        }
+        console.log(`Login success: ${user.username} (Role: ${user.role})`);
+        res.json(user);
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+      res.status(500).json({ message: "Internal server error during login" });
     }
-
-    req.login(user, (err) => {
-      if (err) return res.status(500).json({ message: "Erreur de session" });
-      res.json(user);
-    });
   });
 
   // Local Register
