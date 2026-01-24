@@ -3,17 +3,29 @@ import fs from "fs";
 import path from "path";
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(__dirname, "public");
+  let distPath = path.resolve(__dirname, "public");
+
   if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
-    );
+    // Si le dossier public n'existe pas, on cherche à la racine (structure plate cPanel)
+    distPath = __dirname;
   }
 
-  app.use(express.static(distPath));
+  app.use(express.static(distPath, {
+    index: false // On gère l'index manuellement pour éviter les conflits
+  }));
 
   // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+  app.use("*", (req, res, next) => {
+    // Si c'est une requête API, on laisse passer
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+
+    const indexPath = path.resolve(distPath, "index.html");
+    if (fs.existsSync(indexPath)) {
+      res.sendFile(indexPath);
+    } else {
+      res.status(404).send("Site en cours de maintenance (Fichiers manquants)");
+    }
   });
 }
