@@ -19,6 +19,7 @@ import AdminClients from "@/pages/admin/Clients";
 import AdminBookings from "@/pages/admin/Bookings";
 import AdminOffers from "@/pages/admin/Offers";
 import AdminCreateOffer from "@/pages/admin/CreateOffer";
+import AdminEditOffer from "@/pages/admin/EditOffer";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -48,6 +49,7 @@ function Router() {
           <Route path="/admin/bookings" component={AdminBookings} />
           <Route path="/admin/offers" component={AdminOffers} />
           <Route path="/admin/offers/new" component={AdminCreateOffer} />
+          <Route path="/admin/offers/:id/edit" component={AdminEditOffer} />
 
           <Route component={NotFound} />
         </Switch>

@@ -1,24 +1,8 @@
-# START NODEJS CONFIG
 PassengerEnabled on
 PassengerAppRoot /home/manasikt/public_html
 PassengerAppType node
-PassengerStartupFile index.js
+PassengerStartupFile app.js
 
-# Définition de l'environnement
-SetEnv NODE_ENV production
-SetEnv PORT 5000
-
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-
-  # Si la requête demande un fichier qui existe (image, css, js), on le sert directement
-  RewriteCond %{REQUEST_FILENAME} -f
-  RewriteRule ^ - [L]
-
-  # Sinon, on envoie tout le reste vers index.js (Node.js)
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(.*)$ index.js [L]
-</IfModule>
-# END NODEJS CONFIG
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.js [L]

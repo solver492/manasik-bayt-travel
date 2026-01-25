@@ -56,11 +56,14 @@ export default function Footer() {
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-primary-foreground/70">
                 <MapPin className="w-5 h-5 text-gold shrink-0" />
-                <span>123 Avenue Mohammed V,<br />Casablanca, Morocco</span>
+                <span>Rue Fès, Galerie Marrakech N°29,<br />Tanger, Maroc</span>
               </li>
-              <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
+              <li className="flex items-start gap-3 text-sm text-primary-foreground/70">
                 <Phone className="w-5 h-5 text-gold shrink-0" />
-                <span>+212 522 123 456</span>
+                <div>
+                  <div>Fixe: 0531 31 53 15</div>
+                  <div className="mt-1">Mobile: +212 661 63 11 60</div>
+                </div>
               </li>
               <li className="flex items-center gap-3 text-sm text-primary-foreground/70">
                 <Mail className="w-5 h-5 text-gold shrink-0" />

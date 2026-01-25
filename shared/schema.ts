@@ -47,7 +47,8 @@ export const offers = pgTable("offers", {
   currency: text("currency").default("MAD").notNull(),
   durationDays: integer("duration_days").notNull(),
   imageUrl: text("image_url").notNull(),
-  isFeatured: boolean("is_featured").default(false),
+  isFeatured: boolean("is_featured").default(false).notNull(),
+  isVisible: boolean("is_visible").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow(),
 });
 

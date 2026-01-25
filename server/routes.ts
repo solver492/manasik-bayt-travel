@@ -123,6 +123,12 @@ export async function registerRoutes(
     res.json(bookings);
   });
 
+  // Get all offers including hidden ones for admin
+  app.get("/api/admin/offers", isAdmin, async (req, res) => {
+    const offers = await storage.getOffers({ includeHidden: true });
+    res.json(offers);
+  });
+
   app.post("/api/admin/offers", isAdmin, async (req, res) => {
     try {
       const input = api.offers.create.input.parse(req.body);
@@ -139,6 +145,15 @@ export async function registerRoutes(
       res.json(offer);
     } catch (e: any) {
       res.status(400).json({ message: "Error updating offer" });
+    }
+  });
+
+  app.post("/api/admin/offers/:id/toggle-visibility", isAdmin, async (req, res) => {
+    try {
+      const offer = await storage.toggleOfferVisibility(Number(req.params.id));
+      res.json(offer);
+    } catch (e: any) {
+      res.status(400).json({ message: e.message || "Error toggling visibility" });
     }
   });
 

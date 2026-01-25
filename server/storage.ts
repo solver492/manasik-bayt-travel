@@ -19,11 +19,12 @@ export interface IStorage {
   getClients(): Promise<User[]>; // For Backoffice
 
   // Offers
-  getOffers(filter?: { type?: string; featured?: boolean }): Promise<Offer[]>;
+  getOffers(filter?: { type?: string; featured?: boolean; includeHidden?: boolean }): Promise<Offer[]>;
   getOffer(id: number): Promise<Offer | undefined>;
   createOffer(offer: InsertOffer): Promise<Offer>;
   updateOffer(id: number, offer: Partial<InsertOffer>): Promise<Offer>; // For Backoffice
   deleteOffer(id: number): Promise<void>; // For Backoffice
+  toggleOfferVisibility(id: number): Promise<Offer>; // For Backoffice
 
   // Bookings
   createBooking(booking: InsertBooking): Promise<Booking>;
@@ -81,10 +82,15 @@ export class DatabaseStorage implements IStorage {
   }
 
   // === OFFERS ===
-  async getOffers(filter?: { type?: string; featured?: boolean }): Promise<Offer[]> {
+  async getOffers(filter?: { type?: string; featured?: boolean; includeHidden?: boolean }): Promise<Offer[]> {
     let conditions = [];
     if (filter?.type) conditions.push(eq(offers.type, filter.type as any));
     if (filter?.featured) conditions.push(eq(offers.isFeatured, true));
+
+    // Par défaut, on ne montre que les offres visibles (sauf si includeHidden est true pour l'admin)
+    if (!filter?.includeHidden) {
+      conditions.push(eq(offers.isVisible, true));
+    }
 
     return await db
       .select()
@@ -110,6 +116,18 @@ export class DatabaseStorage implements IStorage {
 
   async deleteOffer(id: number): Promise<void> {
     await db.delete(offers).where(eq(offers.id, id));
+  }
+
+  async toggleOfferVisibility(id: number): Promise<Offer> {
+    const offer = await this.getOffer(id);
+    if (!offer) throw new Error("Offer not found");
+
+    const [updatedOffer] = await db
+      .update(offers)
+      .set({ isVisible: !offer.isVisible })
+      .where(eq(offers.id, id))
+      .returning();
+    return updatedOffer;
   }
 
   // === BOOKINGS ===

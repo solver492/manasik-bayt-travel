@@ -53,8 +53,23 @@ export default function Contact() {
                                         <Phone className="w-6 h-6" />
                                     </div>
                                     <div>
-                                        <p className="text-sm text-muted-foreground uppercase tracking-wider font-bold">Téléphone</p>
-                                        <p className="text-lg font-medium">+213 (0) 555 123 456</p>
+                                        <p className="text-sm text-muted-foreground uppercase tracking-wider font-bold">Téléphone Fixe</p>
+                                        <p className="text-lg font-medium">0531 31 53 15</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-start gap-4">
+                                    <div className="w-12 h-12 rounded-2xl bg-gold/10 flex items-center justify-center text-gold shrink-0">
+                                        <Phone className="w-6 h-6" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm text-muted-foreground uppercase tracking-wider font-bold">Mobiles</p>
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-medium">Oussama: +212 661 63 11 60</p>
+                                            <p className="text-sm font-medium">Yassine: +212 631 31 53 04</p>
+                                            <p className="text-sm font-medium">Khadidja: +212 631 31 53 06</p>
+                                            <p className="text-sm font-medium">Ahmed: +212 631 31 53 07</p>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -74,7 +89,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-muted-foreground uppercase tracking-wider font-bold">Adresse</p>
-                                        <p className="text-lg font-medium">123 Rue de la Liberté, Alger, Algérie</p>
+                                        <p className="text-lg font-medium">Rue Fès, Galerie Marrakech N°29, Tanger</p>
                                     </div>
                                 </div>
                             </div>
