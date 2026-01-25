@@ -75,7 +75,7 @@ export default function Footer() {
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/50">
           <p>&copy; {new Date().getFullYear()} Manasik Bayt Travel. {t("footer.rights")}</p>
-          <p>Designed with ❤️ for travelers.</p>
+          <p>Designed and developed by digitalsolverland.</p>
         </div>
       </div>
     </footer>
