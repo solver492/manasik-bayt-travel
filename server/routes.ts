@@ -162,6 +162,16 @@ export async function registerRoutes(
     res.status(204).end();
   });
 
+  app.patch("/api/admin/bookings/:id/status", isAdmin, async (req, res) => {
+    try {
+      const { status } = req.body;
+      const booking = await storage.updateBookingStatus(Number(req.params.id), status);
+      res.json(booking);
+    } catch (e: any) {
+      res.status(400).json({ message: "Error updating booking status" });
+    }
+  });
+
   // Offers
   app.get(api.offers.list.path, async (req, res) => {
     const filters = {

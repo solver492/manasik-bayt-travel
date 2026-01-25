@@ -3,12 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { useOffers } from "@/hooks/use-offers";
 import OfferCard from "@/components/OfferCard";
-import { ArrowRight, Star, Plane, Shield, Wifi } from "lucide-react";
+import { ArrowRight, Star, Plane, Shield } from "lucide-react";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import BookingModal from "@/components/BookingModal";
 
 export default function Home() {
   const { t } = useLanguage();
   const { data: featuredOffers, isLoading } = useOffers({ featured: true });
+  const [isBookingModalOpen, setIsBookingModalOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -120,50 +123,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* eSIM Section */}
-      <section className="py-24 bg-primary relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-1/2 h-full bg-gold/5 -skew-x-12 transform origin-top" />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <div className="lg:w-1/2 space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gold/10 text-gold text-sm font-bold uppercase tracking-wider">
-                <Wifi className="w-4 h-4" /> Connectivity
-              </div>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold text-white">
-                {t("section.esim.title")}
-              </h2>
-              <p className="text-white/80 text-lg leading-relaxed">
-                {t("section.esim.desc")}
+      {/* Omra Ramadan 2026 Section Simplified */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto text-center space-y-8 bg-muted/30 p-12 rounded-3xl border border-gold/20 shadow-lg">
+
+            <h2 className="text-3xl md:text-5xl font-serif font-bold text-primary leading-tight">
+              🌙 Offres Omra Ramadan 2026 - Packs Complets (30 Jours)
+            </h2>
+
+            <div className="space-y-4 text-lg md:text-xl text-muted-foreground">
+              <p className="font-medium">
+                <span className="text-primary font-bold">Départ :</span> 17 Février 2026 | <span className="text-primary font-bold">Retour :</span> 22 Mars 2026
               </p>
-              <div className="flex gap-4">
-                <Button className="bg-gold hover:bg-gold/90 text-primary-foreground rounded-full px-8">
-                  Get eSIM
-                </Button>
-                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 rounded-full">
-                  Watch Guide
-                </Button>
-              </div>
+              <p className="font-medium">
+                <span className="text-primary font-bold">Lieu de départ :</span> Vol Direct depuis l'Aéroport de Tanger
+              </p>
             </div>
 
-            <div className="lg:w-1/2">
-              {/* Video Placeholder */}
-              <div className="relative aspect-video rounded-2xl overflow-hidden bg-black/20 backdrop-blur-sm border border-white/10 shadow-2xl group cursor-pointer">
-                {/* Unsplash: Man using phone in airport */}
-                <img
-                  src="https://images.unsplash.com/photo-1526948531399-320e7e40f0ca?q=80&w=2000&auto=format&fit=crop"
-                  alt="eSIM usage"
-                  className="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity"
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1" />
-                  </div>
-                </div>
-              </div>
+            <div className="pt-8">
+              <Button
+                size="lg"
+                onClick={() => setIsBookingModalOpen(true)}
+                className="bg-gold hover:bg-gold/90 text-primary-foreground min-w-[240px] h-14 text-xl font-bold rounded-full shadow-xl shadow-gold/20 hover:scale-105 transition-transform duration-300"
+              >
+                Réserver Maintenant
+              </Button>
             </div>
+
           </div>
         </div>
       </section>
+
+      <BookingModal
+        isOpen={isBookingModalOpen}
+        onClose={() => setIsBookingModalOpen(false)}
+        offerTitle="Omra Ramadan 2026"
+        offerId={1}
+      />
     </div>
   );
 }

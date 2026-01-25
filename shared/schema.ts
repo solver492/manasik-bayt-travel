@@ -60,7 +60,11 @@ export const bookings = pgTable("bookings", {
   status: text("status", { enum: ["pending", "confirmed", "cancelled", "completed"] }).default("pending").notNull(),
   travelersCount: integer("travelers_count").default(1).notNull(),
   totalPrice: integer("total_price").notNull(),
-  specialRequests: text("special_requests"),
+  bookingsCount: integer("bookings_count").default(0),
+  specialRequests: text("special_requests"), // existing field
+  contactName: text("contact_name"), // New field for quick booking
+  contactPhone: text("contact_phone"), // New field for quick booking
+  contactAddress: text("contact_address"), // New field for quick booking
   createdAt: timestamp("created_at").defaultNow(),
 });
 

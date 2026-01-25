@@ -53,12 +53,23 @@ export default function AdminClients() {
                                             </TableCell>
                                             <TableCell>{client.email}</TableCell>
                                             <TableCell>{client.firstName} {client.lastName}</TableCell>
-                                            <TableCell>{client.phone || '-'}</TableCell>
+                                            <TableCell>
+                                                {client.phone ? (
+                                                    <a
+                                                        href={`https://wa.me/${client.phone.replace(/\s+/g, '').replace('+', '')}`}
+                                                        target="_blank"
+                                                        className="flex items-center gap-2 hover:text-green-600 transition-colors"
+                                                    >
+                                                        <Phone className="h-4 w-4" />
+                                                        {client.phone}
+                                                    </a>
+                                                ) : '-'}
+                                            </TableCell>
                                             <TableCell>{client.points}</TableCell>
                                             <TableCell>
                                                 <span className={`px-2 py-1 rounded-full text-xs font-bold uppercase ${client.level === 'gold' ? 'bg-yellow-100 text-yellow-800' :
-                                                        client.level === 'silver' ? 'bg-gray-100 text-gray-800' :
-                                                            'bg-orange-50 text-orange-800'
+                                                    client.level === 'silver' ? 'bg-gray-100 text-gray-800' :
+                                                        'bg-orange-50 text-orange-800'
                                                     }`}>
                                                     {client.level}
                                                 </span>

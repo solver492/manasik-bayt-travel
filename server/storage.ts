@@ -29,7 +29,7 @@ export interface IStorage {
   // Bookings
   createBooking(booking: InsertBooking): Promise<Booking>;
   getBookingsByUser(userId: number): Promise<Booking[]>;
-  getAllBookings(): Promise<Booking[]>; // For Backoffice
+  getAllBookings(): Promise<any[]>; // For Backoffice with details
   updateBookingStatus(id: number, status: string): Promise<Booking>;
 
   // Content
@@ -144,8 +144,31 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(bookings.createdAt));
   }
 
-  async getAllBookings(): Promise<Booking[]> {
-    return await db.select().from(bookings).orderBy(desc(bookings.createdAt));
+  async getAllBookings(): Promise<any[]> {
+    return await db
+      .select({
+        id: bookings.id,
+        offerId: bookings.offerId,
+        userId: bookings.userId,
+        travelersCount: bookings.travelersCount,
+        totalPrice: bookings.totalPrice,
+        status: bookings.status,
+        specialRequests: bookings.specialRequests,
+        contactName: bookings.contactName,
+        contactPhone: bookings.contactPhone,
+        contactAddress: bookings.contactAddress,
+        createdAt: bookings.createdAt,
+        offerTitle: offers.title,
+        offerSlug: offers.slug,
+        clientFirstName: users.firstName,
+        clientLastName: users.lastName,
+        clientUsername: users.username,
+        clientPhone: users.phone
+      })
+      .from(bookings)
+      .leftJoin(offers, eq(bookings.offerId, offers.id))
+      .leftJoin(users, eq(bookings.userId, users.id))
+      .orderBy(desc(bookings.createdAt));
   }
 
   async updateBookingStatus(id: number, status: any): Promise<Booking> {

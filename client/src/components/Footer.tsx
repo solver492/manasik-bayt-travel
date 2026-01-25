@@ -22,7 +22,7 @@ export default function Footer() {
               Your trusted partner for spiritual journeys and world exploration. We combine luxury, comfort, and spirituality.
             </p>
             <div className="flex gap-4">
-              <a href="#" className="text-gold hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
+              <a href="https://www.facebook.com/profile.php?id=61586792775655" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-white transition-colors"><Facebook className="w-5 h-5" /></a>
               <a href="#" className="text-gold hover:text-white transition-colors"><Instagram className="w-5 h-5" /></a>
               <a href="#" className="text-gold hover:text-white transition-colors"><Twitter className="w-5 h-5" /></a>
             </div>
