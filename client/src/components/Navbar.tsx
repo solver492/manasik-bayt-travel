@@ -165,9 +165,9 @@ export default function Navbar() {
                   </div>
                   <div className="h-px bg-border my-1" />
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="cursor-pointer w-full flex items-center">
+                    <Link href={user.role === 'admin' ? "/admin" : "/dashboard"} className="cursor-pointer w-full flex items-center">
                       <LayoutDashboard className="w-4 h-4 mr-2" />
-                      {t("nav.dashboard")}
+                      {user.role === 'admin' ? "Admin Panel" : t("nav.dashboard")}
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => logout()} className="text-destructive focus:text-destructive">
@@ -239,8 +239,8 @@ export default function Navbar() {
               <Button variant={language === 'en' ? 'secondary' : 'ghost'} size="sm" onClick={() => setLanguage('en')}>EN</Button>
             </div>
             {user ? (
-              <Link href="/dashboard" onClick={() => setIsOpen(false)}>
-                <Button variant="outline" size="sm">{t("nav.dashboard")}</Button>
+              <Link href={user.role === 'admin' ? "/admin" : "/dashboard"} onClick={() => setIsOpen(false)}>
+                <Button variant="outline" size="sm">{user.role === 'admin' ? "Admin" : t("nav.dashboard")}</Button>
               </Link>
             ) : (
               <Link href="/auth">

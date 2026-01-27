@@ -20,8 +20,10 @@ import AdminBookings from "@/pages/admin/Bookings";
 import AdminOffers from "@/pages/admin/Offers";
 import AdminCreateOffer from "@/pages/admin/CreateOffer";
 import AdminEditOffer from "@/pages/admin/EditOffer";
+import ChatbotPage from "@/pages/ChatbotPage";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Chatbot from "@/components/Chatbot";
 
 function Router() {
   return (
@@ -39,6 +41,7 @@ function Router() {
           <Route path="/services" component={Services} />
           <Route path="/auth" component={AuthPage} />
           <Route path="/login" component={AuthPage} />
+          <Route path="/reserver" component={ChatbotPage} />
 
           <Route path="/services/hotel" component={HotelService} />
           <Route path="/services/car-rent" component={CarRentService} />
@@ -55,6 +58,7 @@ function Router() {
         </Switch>
       </main>
       <Footer />
+      <Chatbot />
     </div>
   );
 }

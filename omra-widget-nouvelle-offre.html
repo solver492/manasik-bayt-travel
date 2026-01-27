@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Omra Ramadan 2026 - Manasik Travel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0F2438 0%, #1A3A5C 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            color: #D4AF37;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .title {
+            font-family: 'Amiri', serif;
+            font-size: 48px;
+            color: #F4E4B8;
+            margin-bottom: 20px;
+        }
+
+        .dates {
+            background: rgba(212, 175, 55, 0.2);
+            padding: 12px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            border: 2px solid #D4AF37;
+            color: #F4E4B8;
+            font-weight: 600;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Cercle principal */
+        .circle-zone {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            animation: slideIn 1s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .main-circle {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFF8E7 0%, #FFF 100%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 
+                0 0 0 15px rgba(212, 175, 55, 0.1),
+                0 0 0 30px rgba(212, 175, 55, 0.05),
+                0 30px 80px rgba(0, 0, 0, 0.5);
+            border: 3px solid #D4AF37;
+        }
+
+        .center-icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .center-price {
+            font-size: 52px;
+            font-weight: 900;
+            color: #1A3A5C;
+            margin-bottom: 10px;
+        }
+
+        .center-label {
+            font-size: 16px;
+            color: #1A3A5C;
+            opacity: 0.7;
+        }
+
+        /* Options orbitales */
+        .option-circle {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFF, #FFF8E7);
+            border: 4px solid #F4E4B8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .option-circle:hover {
+            transform: scale(1.1);
+            border-color: #D4AF37;
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.4);
+        }
+
+        .option-circle.active {
+            background: linear-gradient(135deg, #D4AF37, #B8941F);
+            border-color: #B8941F;
+            transform: scale(1.15);
+            box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
+        }
+
+        .option-circle.active .option-icon,
+        .option-circle.active .option-title,
+        .option-circle.active .option-price {
+            color: white;
+        }
+
+        .option-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .option-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #1A3A5C;
+            margin-bottom: 4px;
+        }
+
+        .option-price {
+            font-size: 16px;
+            font-weight: 900;
+            color: #D4AF37;
+        }
+
+        /* Positions des cercles */
+        .pos-top { top: 0; left: 50%; transform: translate(-50%, -50%); }
+        .pos-right-top { top: 15%; right: 0; transform: translate(50%, -50%); }
+        .pos-right-bottom { bottom: 15%; right: 0; transform: translate(50%, 50%); }
+
+        /* Panel d'information */
+        .info-panel {
+            background: linear-gradient(to bottom, #FFF8E7 0%, #FFF 100%);
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4);
+            border: 3px solid #F4E4B8;
+            max-width: 500px;
+            width: 100%;
+            animation: slideInRight 1s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 900;
+            color: #1A3A5C;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .selection-box {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            border: 2px solid #F4E4B8;
+            margin-bottom: 10px;
+        }
+
+        .selection-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+        }
+
+        .selection-label {
+            color: #1A3A5C;
+            font-weight: 600;
+        }
+
+        .selection-value {
+            color: #D4AF37;
+            font-weight: 700;
+        }
+
+        /* Hôtels */
+        .hotel-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .hotel-card {
+            background: white;
+            border: 3px solid #F4E4B8;
+            border-radius: 15px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .hotel-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hotel-card.active {
+            background: linear-gradient(135deg, #F4E4B8, #D4AF37);
+            border-color: #B8941F;
+        }
+
+        .hotel-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1A3A5C;
+            margin-bottom: 5px;
+        }
+
+        .hotel-location {
+            font-size: 11px;
+            color: #1A3A5C;
+            opacity: 0.6;
+            margin-bottom: 5px;
+        }
+
+        .hotel-stars {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .hotel-price {
+            font-size: 11px;
+            color: #D4AF37;
+            font-weight: 700;
+        }
+
+        /* Transport */
+        .transport-grid {
+            display: flex;
+            gap: 10px;
+        }
+
+        .transport-card {
+            flex: 1;
+            background: white;
+            border: 3px solid #F4E4B8;
+            border-radius: 15px;
+            padding: 15px 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .transport-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .transport-card.active {
+            background: linear-gradient(135deg, #F4E4B8, #D4AF37);
+            border-color: #B8941F;
+        }
+
+        .transport-icon {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .transport-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #1A3A5C;
+        }
+
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .service-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border: 2px solid #F4E4B8;
+            text-align: center;
+            font-size: 13px;
+            color: #1A3A5C;
+            font-weight: 600;
+        }
+
+        .service-icon {
+            font-size: 28px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        /* Total */
+        .total-box {
+            background: linear-gradient(135deg, #1A3A5C, #0F2438);
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .total-label {
+            font-size: 18px;
+            margin-bottom: 15px;
+            opacity: 0.9;
+        }
+
+        .total-price {
+            font-size: 50px;
+            font-weight: 900;
+            color: #D4AF37;
+            margin-bottom: 25px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .cta-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #D4AF37, #B8941F);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-size: 20px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
+        }
+
+        .contact-box {
+            margin-top: 25px;
+            text-align: center;
+            padding: 20px;
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 20px;
+            border: 2px dashed #D4AF37;
+        }
+
+        .phone-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #2D6A4F, #1e5f42);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .phone-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+
+        @media (max-width: 1024px) {
+            .circle-zone {
+                width: 500px;
+                height: 500px;
+            }
+
+            .main-circle {
+                width: 350px;
+                height: 350px;
+            }
+
+            .option-circle {
+                width: 110px;
+                height: 110px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 36px;
+            }
+
+            .circle-zone {
+                width: 400px;
+                height: 400px;
+            }
+
+            .main-circle {
+                width: 280px;
+                height: 280px;
+            }
+
+            .option-circle {
+                width: 90px;
+                height: 90px;
+            }
+
+            .option-icon {
+                font-size: 28px;
+            }
+
+            .option-title {
+                font-size: 11px;
+            }
+
+            .center-price {
+                font-size: 38px;
+            }
+
+            .info-panel {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">مناسك • Manasik Bayt Travel</div>
+            <h1 class="title">عمرة رمضان 2026</h1>
+            <div class="dates">
+                🛫 17 فبراير 2026 • 🛬 22 مارس 2026
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Zone circulaire -->
+            <div class="circle-zone">
+                <!-- Cercle principal -->
+                <div class="main-circle">
+                    <div class="center-icon">🕌</div>
+                    <div class="center-price" id="centerPrice">29.500 DHS</div>
+                    <div class="center-label">Prix par personne</div>
+                </div>
+
+                <!-- Options chambres -->
+                <div class="option-circle pos-top active" data-type="room" data-value="quad">
+                    <div class="option-icon">👥👥</div>
+                    <div class="option-title">Quadruple</div>
+                    <div class="option-price">4 pers.</div>
+                </div>
+
+                <div class="option-circle pos-right-top" data-type="room" data-value="triple">
+                    <div class="option-icon">👨‍👩‍👦</div>
+                    <div class="option-title">Triple</div>
+                    <div class="option-price">3 pers.</div>
+                </div>
+
+                <div class="option-circle pos-right-bottom" data-type="room" data-value="double">
+                    <div class="option-icon">👫</div>
+                    <div class="option-title">Double</div>
+                    <div class="option-price">2 pers.</div>
+                </div>
+            </div>
+
+            <!-- Panel d'information -->
+            <div class="info-panel">
+                <div class="section">
+                    <div class="section-title">🏨 Votre Sélection</div>
+                    <div class="selection-box">
+                        <div class="selection-row">
+                            <span class="selection-label">Chambre:</span>
+                            <span class="selection-value" id="displayRoom">Quadruple</span>
+                        </div>
+                        <div class="selection-row">
+                            <span class="selection-label">Hôtel:</span>
+                            <span class="selection-value" id="displayHotel">Rehab Al-Misk</span>
+                        </div>
+                        <div class="selection-row">
+                            <span class="selection-label">Transport:</span>
+                            <span class="selection-value" id="displayTransport">Bus</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🕌 Choisissez l'hôtel</div>
+                    <div class="hotel-grid">
+                        <div class="hotel-card active" data-hotel="rehab" data-quad="29500" data-triple="31500" data-double="35500">
+                            <div class="hotel-name">Rehab Al-Misk</div>
+                            <div class="hotel-location">🕋 Kadi Tours</div>
+                            <div class="hotel-stars">⭐⭐⭐</div>
+                        </div>
+                        <div class="hotel-card" data-hotel="abraj-kaswah" data-quad="32500" data-triple="35500" data-double="37500">
+                            <div class="hotel-name">Abraj Al-Kaswah</div>
+                            <div class="hotel-location">🕋 La Mecque</div>
+                            <div class="hotel-stars">⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="hotel-card" data-hotel="abraj-tayseer" data-quad="32500" data-triple="34500" data-double="38500">
+                            <div class="hotel-name">Abraj Al-Tayseer</div>
+                            <div class="hotel-location">🕋 La Mecque</div>
+                            <div class="hotel-stars">⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="hotel-card" data-hotel="nawazi" data-quad="34500" data-triple="38500" data-double="42500">
+                            <div class="hotel-name">Nawazi Tours</div>
+                            <div class="hotel-location">🕋 La Mecque</div>
+                            <div class="hotel-stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                        <div class="hotel-card" data-hotel="kauthar" data-quad="35500" data-triple="39500" data-double="46500">
+                            <div class="hotel-name">Kauthar Marbouth</div>
+                            <div class="hotel-location">🕋 Premium</div>
+                            <div class="hotel-stars">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">🚗 Transport</div>
+                    <div class="transport-grid">
+                        <div class="transport-card active" data-transport="bus">
+                            <div class="transport-icon">🚌</div>
+                            <div class="transport-label">Bus</div>
+                        </div>
+                        <div class="transport-card" data-transport="car">
+                            <div class="transport-icon">🚗</div>
+                            <div class="transport-label">Voiture</div>
+                        </div>
+                        <div class="transport-card" data-transport="train">
+                            <div class="transport-icon">🚄</div>
+                            <div class="transport-label">TGV</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">✨ Services Inclus</div>
+                    <div class="services-grid">
+                        <div class="service-item">
+                            <span class="service-icon">✈️</span>
+                            Vol Saudia
+                        </div>
+                        <div class="service-item">
+                            <span class="service-icon">🧳</span>
+                            2×23kg+10kg
+                        </div>
+                        <div class="service-item">
+                            <span class="service-icon">📋</span>
+                            Visa inclus
+                        </div>
+                        <div class="service-item">
+                            <span class="service-icon">👥</span>
+                            Assistance 24/7
+                        </div>
+                    </div>
+                </div>
+
+                <div class="total-box">
+                    <div class="total-label">Prix Total par Personne</div>
+                    <div class="total-price" id="totalPrice">29.500 DHS</div>
+                    <button class="cta-btn" onclick="bookNow()">
+                        🎉 Réserver Maintenant
+                    </button>
+                </div>
+
+                <div class="contact-box">
+                    <div style="font-weight: 700; color: #1A3A5C; margin-bottom: 10px;">📞 Contactez-nous</div>
+                    <a href="tel:+212661631160" class="phone-btn">
+                        <span>📱</span>
+                        <span>+212 661-631160</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // État de la sélection
+        const state = {
+            room: 'quad',
+            hotel: 'rehab',
+            transport: 'bus'
+        };
+
+        // Prix par hôtel et type de chambre
+        const hotelPrices = {
+            rehab: { quad: 29500, triple: 31500, double: 35500 },
+            'abraj-kaswah': { quad: 32500, triple: 35500, double: 37500 },
+            'abraj-tayseer': { quad: 32500, triple: 34500, double: 38500 },
+            nawazi: { quad: 34500, triple: 38500, double: 42500 },
+            kauthar: { quad: 35500, triple: 39500, double: 46500 }
+        };
+
+        const names = {
+            room: {
+                quad: 'Quadruple (4 pers.)',
+                triple: 'Triple (3 pers.)',
+                double: 'Double (2 pers.)'
+            },
+            hotel: {
+                rehab: 'Rehab Al-Misk - Kadi Tours',
+                'abraj-kaswah': 'Abraj Al-Kaswah',
+                'abraj-tayseer': 'Abraj Al-Tayseer',
+                nawazi: 'Nawazi Tours',
+                kauthar: 'Kauthar Marbouth'
+            },
+            transport: {
+                bus: 'Bus climatisé',
+                car: 'Voiture privée',
+                train: 'Train grande vitesse'
+            }
+        };
+
+        // Sélection des chambres (cercles)
+        document.querySelectorAll('.option-circle[data-type="room"]').forEach(circle => {
+            circle.addEventListener('click', function() {
+                document.querySelectorAll('.option-circle[data-type="room"]').forEach(c => {
+                    c.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                state.room = this.dataset.value;
+                updateDisplay();
+            });
+        });
+
+        // Sélection des hôtels
+        document.querySelectorAll('.hotel-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.hotel-card').forEach(c => {
+                    c.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                state.hotel = this.dataset.hotel;
+                updateDisplay();
+            });
+        });
+
+        // Sélection du transport
+        document.querySelectorAll('.transport-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.transport-card').forEach(c => {
+                    c.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                state.transport = this.dataset.transport;
+                updateDisplay();
+            });
+        });
+
+        // Mise à jour de l'affichage
+        function updateDisplay() {
+            const price = hotelPrices[state.hotel][state.room];
+            
+            document.getElementById('centerPrice').textContent = price.toLocaleString('fr-FR') + ' DHS';
+            document.getElementById('totalPrice').textContent = price.toLocaleString('fr-FR') + ' DHS';
+            
+            document.getElementById('displayRoom').textContent = names.room[state.room];
+            document.getElementById('displayHotel').textContent = names.hotel[state.hotel];
+            document.getElementById('displayTransport').textContent = names.transport[state.transport];
+        }
+
+        // Réservation
+        function bookNow() {
+            const price = hotelPrices[state.hotel][state.room];
+            
+            const message = `🕌 *Réservation Omra Ramadan 2026*\n\n` +
+                `🏨 Chambre: ${names.room[state.room]}\n` +
+                `🕌 Hôtel: ${names.hotel[state.hotel]}\n` +
+                `🚗 Transport: ${names.transport[state.transport]}\n` +
+                `💰 Prix total: ${price.toLocaleString('fr-FR')} DHS/personne\n\n` +
+                `Je souhaite réserver ce forfait.`;
+            
+            const url = `https://wa.me/212661631160?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Initialiser
+        updateDisplay();
+    </script>
+</body>
+</html>

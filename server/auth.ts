@@ -19,10 +19,10 @@ export function getSession() {
     secret: process.env.SESSION_SECRET || "dev-secret-change-in-production",
     resave: false,
     saveUninitialized: false,
-    proxy: true, // Required for secure cookies behind a proxy (Hostinger/cPanel)
+    proxy: true,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Enable secure cookies in production
+      secure: false, // Changed to false to fix login issues on Hostinger VPS where proxy headers might be missing
       maxAge: sessionTtl,
       sameSite: 'lax'
     },
