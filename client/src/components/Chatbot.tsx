@@ -409,39 +409,45 @@ export function ChatInterface({ isFullPage = false }: { isFullPage?: boolean }) 
 
     const containerClasses = isFullPage
         ? "w-full h-full flex flex-col bg-white"
-        : "fixed bottom-28 right-6 z-40 w-[95vw] max-w-[450px] h-[750px] bg-white rounded-[3rem] shadow-[0_30px_100px_rgba(0,0,0,0.4)] border-8 border-slate-50 flex flex-col overflow-hidden";
+        : cn(
+            "fixed z-40 bg-white flex flex-col overflow-hidden transition-all duration-300",
+            // Mobile: full width, high height, less rounded
+            "bottom-0 right-0 w-full h-[85vh] rounded-t-[2rem] border-x-0 border-b-0 border-t-4 border-slate-50 hover:h-[90vh]",
+            // Desktop: floating, fixed size, very rounded
+            "md:bottom-28 md:right-6 md:w-[95vw] md:max-w-[420px] md:h-[min(750px,80vh)] md:rounded-[3rem] md:border-8 md:shadow-[0_30px_100px_rgba(0,0,0,0.4)]"
+        );
 
     return (
         <div dir={isRTL ? 'rtl' : 'ltr'} className={containerClasses}>
             {/* Mission HUD Header */}
-            <div className="p-8 bg-primary text-white flex items-center justify-between border-b-4 border-gold/30">
-                <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 bg-gradient-to-tr from-gold to-yellow-600 rounded-2xl flex items-center justify-center shadow-lg shadow-gold/20 rotate-3 text-white">
-                        <Bot className="w-8 h-8 -rotate-3" />
+            <div className="p-4 md:p-8 bg-primary text-white flex items-center justify-between border-b-4 border-gold/30">
+                <div className="flex items-center gap-3 md:gap-4">
+                    <div className="w-10 h-10 md:w-14 md:h-14 bg-gradient-to-tr from-gold to-yellow-600 rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg shadow-gold/20 rotate-3 text-white">
+                        <Bot className="w-6 h-6 md:w-8 md:h-8 -rotate-3" />
                     </div>
                     <div>
-                        <h3 className="font-black text-xl tracking-tight uppercase leading-none mb-2">{t.assistant}</h3>
+                        <h3 className="font-black text-lg md:text-xl tracking-tight uppercase leading-none mb-1 md:mb-2">{t.assistant}</h3>
                         <div className="flex items-center gap-2">
-                            <span className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_green]" />
-                            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">{t.expert}</p>
+                            <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_green]" />
+                            <p className="text-[9px] md:text-[10px] font-black uppercase tracking-[0.2em] text-white/50">{t.expert}</p>
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col items-end">
-                    <p className="text-[10px] font-black opacity-40 mb-1">{t.level}</p>
-                    <div className="px-3 py-1 bg-white/10 rounded-full border border-white/20 text-gold font-black text-lg min-w-[40px] text-center">
+                    <p className="text-[9px] md:text-[10px] font-black opacity-40 mb-1">{t.level}</p>
+                    <div className="px-2 md:px-3 py-0.5 md:py-1 bg-white/10 rounded-full border border-white/20 text-gold font-black text-base md:text-lg min-w-[35px] md:min-w-[40px] text-center">
                         {Math.floor(progress / 15) + 1}
                     </div>
                 </div>
             </div>
 
             {/* Tactical Progress Bar */}
-            <div className="px-8 py-5 bg-slate-50 border-b border-slate-100">
-                <div className="flex justify-between items-center mb-3">
-                    <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.progression}</span>
-                    <span className="text-[10px] font-black text-primary">{progress}%</span>
+            <div className="px-4 md:px-8 py-3 md:py-5 bg-slate-50 border-b border-slate-100">
+                <div className="flex justify-between items-center mb-2 md:mb-3">
+                    <span className="text-[9px] md:text-[10px] font-black text-slate-400 uppercase tracking-widest">{t.progression}</span>
+                    <span className="text-[9px] md:text-[10px] font-black text-primary">{progress}%</span>
                 </div>
-                <div className="h-4 bg-slate-200 rounded-full overflow-hidden p-1 shadow-inner">
+                <div className="h-3 md:h-4 bg-slate-200 rounded-full overflow-hidden p-0.5 md:p-1 shadow-inner">
                     <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${progress}%` }}
@@ -451,22 +457,22 @@ export function ChatInterface({ isFullPage = false }: { isFullPage?: boolean }) 
             </div>
 
             {/* Mission Log (Messages) */}
-            <div ref={scrollRef} className="flex-grow p-8 overflow-y-auto space-y-10 scroll-smooth bg-white custom-scrollbar">
+            <div ref={scrollRef} className="flex-grow p-4 md:p-8 overflow-y-auto space-y-6 md:space-y-10 scroll-smooth bg-white custom-scrollbar">
                 {messages.map((m) => (
                     <motion.div
                         key={m.id}
                         initial={{ opacity: 0, x: m.type === 'bot' ? (isRTL ? 20 : -20) : (isRTL ? -20 : 20) }}
                         animate={{ opacity: 1, x: 0 }}
-                        className={cn("flex gap-5", m.type === 'user' ? "flex-row-reverse" : "flex-row")}
+                        className={cn("flex gap-3 md:gap-5", m.type === 'user' ? "flex-row-reverse" : "flex-row")}
                     >
                         <div className={cn(
-                            "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 border-2 transition-all shadow-lg",
+                            "w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl flex items-center justify-center shrink-0 border-2 transition-all shadow-lg",
                             m.type === 'bot' ? "bg-primary border-primary/10 text-white" : "bg-white border-gold text-gold"
                         )}>
-                            {m.type === 'bot' ? <Bot className="w-6 h-6" /> : <User className="w-6 h-6" />}
+                            {m.type === 'bot' ? <Bot className="w-5 h-5 md:w-6 md:h-6" /> : <User className="w-5 h-5 md:w-6 md:h-6" />}
                         </div>
                         <div className={cn(
-                            "max-w-[85%] p-6 rounded-[2.5rem] text-sm md:text-base leading-relaxed font-medium shadow-sm transition-all",
+                            "max-w-[85%] p-4 md:p-6 rounded-[1.5rem] md:rounded-[2.5rem] text-sm md:text-base leading-relaxed font-medium shadow-sm transition-all",
                             m.type === 'bot'
                                 ? "bg-slate-50 border border-slate-100 text-slate-800" + (isRTL ? " rounded-tr-none" : " rounded-tl-none")
                                 : "bg-gold text-white font-black shadow-xl shadow-gold/20" + (isRTL ? " rounded-tl-none" : " rounded-tr-none")
@@ -478,40 +484,40 @@ export function ChatInterface({ isFullPage = false }: { isFullPage?: boolean }) 
 
                 {/* Dynamic Buttons */}
                 {step === 0 && messages.length >= 2 && (
-                    <div className="grid grid-cols-1 gap-5 pt-4">
+                    <div className="grid grid-cols-1 gap-3 md:gap-5 pt-2 md:pt-4">
                         {PACKAGES(t).map(pkg => (
                             <button
                                 key={pkg.id}
                                 onClick={() => handlePackageSelect(pkg.id, pkg.label)}
-                                className="group p-6 rounded-[2.5rem] border-2 border-slate-100 bg-white hover:border-gold hover:shadow-2xl hover:shadow-gold/10 transition-all flex items-center gap-5 text-left relative overflow-hidden active:scale-95"
+                                className="group p-4 md:p-6 rounded-[1.5rem] md:rounded-[2.5rem] border-2 border-slate-100 bg-white hover:border-gold hover:shadow-xl md:hover:shadow-2xl transition-all flex items-center gap-3 md:gap-5 text-left relative overflow-hidden active:scale-95"
                             >
-                                <div className="w-20 h-20 rounded-[1.5rem] bg-slate-50 flex items-center justify-center group-hover:bg-gold group-hover:text-white transition-all duration-500 shadow-sm">
+                                <div className="w-14 h-14 md:w-20 md:h-20 rounded-xl md:rounded-[1.5rem] bg-slate-50 flex items-center justify-center group-hover:bg-gold group-hover:text-white transition-all duration-500 shadow-sm">
                                     {pkg.icon}
                                 </div>
                                 <div className={cn("flex-grow", isRTL && "text-right")}>
-                                    <p className="font-black text-primary text-xl leading-tight uppercase tracking-tight mb-2">{pkg.label}</p>
-                                    <p className="text-[11px] text-slate-400 font-black uppercase leading-snug tracking-tighter">{pkg.description}</p>
+                                    <p className="font-black text-primary text-base md:text-xl leading-tight uppercase tracking-tight mb-1 md:mb-2">{pkg.label}</p>
+                                    <p className="text-[9px] md:text-[11px] text-slate-400 font-black uppercase leading-snug tracking-tighter">{pkg.description}</p>
                                 </div>
-                                <ArrowRight className={cn("w-7 h-7 text-slate-200 group-hover:text-gold transition-colors", isRTL && "rotate-180")} />
+                                <ArrowRight className={cn("w-5 h-5 md:w-7 md:h-7 text-slate-200 group-hover:text-gold transition-colors", isRTL && "rotate-180")} />
                             </button>
                         ))}
                     </div>
                 )}
 
                 {step === 1 && (
-                    <div className="grid grid-cols-1 gap-3 pt-4">
+                    <div className="grid grid-cols-1 gap-2 md:gap-3 pt-2 md:pt-4">
                         {currentPkg?.rooms.map(opt => (
                             <button
                                 key={opt.id}
                                 onClick={() => handleRoomSelect(opt.id, opt.label[language === 'ar' ? 'ar' : 'fr'])}
-                                className="p-6 rounded-[2rem] border-2 border-slate-50 bg-white hover:border-gold hover:bg-gold/5 transition-all flex items-center justify-between group active:scale-95"
+                                className="p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border-2 border-slate-50 bg-white hover:border-gold hover:bg-gold/5 transition-all flex items-center justify-between group active:scale-95"
                             >
-                                <div className="flex items-center gap-5">
-                                    <span className="text-4xl filter grayscale group-hover:grayscale-0 transition-all">{opt.icon}</span>
-                                    <p className="font-black text-primary uppercase text-sm md:text-base">{opt.label[language === 'ar' ? 'ar' : 'fr']}</p>
+                                <div className="flex items-center gap-3 md:gap-5">
+                                    <span className="text-2xl md:text-4xl filter grayscale group-hover:grayscale-0 transition-all">{opt.icon}</span>
+                                    <p className="font-black text-primary uppercase text-xs md:text-base">{opt.label[language === 'ar' ? 'ar' : 'fr']}</p>
                                 </div>
-                                <div className="w-8 h-8 rounded-xl border-2 border-slate-200 group-hover:border-gold group-hover:bg-gold flex items-center justify-center transition-all">
-                                    <CheckCircle2 className="w-5 h-5 text-white opacity-0 group-hover:opacity-100" />
+                                <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg md:rounded-xl border-2 border-slate-200 group-hover:border-gold group-hover:bg-gold flex items-center justify-center transition-all">
+                                    <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-white opacity-0 group-hover:opacity-100" />
                                 </div>
                             </button>
                         ))}
@@ -519,25 +525,25 @@ export function ChatInterface({ isFullPage = false }: { isFullPage?: boolean }) 
                 )}
 
                 {step === 2 && (
-                    <div className="space-y-4 pt-4">
+                    <div className="space-y-3 md:space-y-4 pt-2 md:pt-4">
                         {currentPkg?.hotels.map(opt => {
                             const price = (opt as any).prices[selection.room];
                             return (
                                 <button
                                     key={opt.id}
                                     onClick={() => handleHotelSelect(opt.id, opt.label)}
-                                    className="w-full group p-6 rounded-[2.5rem] border-2 border-slate-50 bg-white hover:border-gold hover:shadow-2xl transition-all flex items-center justify-between active:scale-95"
+                                    className="w-full group p-4 md:p-6 rounded-[1.5rem] md:rounded-[2.5rem] border-2 border-slate-50 bg-white hover:border-gold border-slate-100 hover:shadow-xl transition-all flex items-center justify-between active:scale-95 text-xs md:text-base"
                                 >
-                                    <div className={cn("text-left", isRTL && "text-right")}>
-                                        <p className="font-black text-primary text-base uppercase mb-2 tracking-tight">{opt.label}</p>
-                                        <div className={cn("flex gap-1", isRTL && "flex-row-reverse")}>
+                                    <div className={cn("text-left flex-grow", isRTL && "text-right")}>
+                                        <p className="font-black text-primary text-sm md:text-base uppercase mb-1 md:mb-2 tracking-tight">{opt.label}</p>
+                                        <div className={cn("flex gap-0.5 md:gap-1", isRTL && "flex-row-reverse")}>
                                             {Array.from({ length: 4 }).map((_, i) => (
-                                                <Star key={i} className="w-4 h-4 text-gold fill-gold" />
+                                                <Star key={i} className="w-3 h-3 md:w-4 md:h-4 text-gold fill-gold" />
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="bg-slate-50 px-5 py-3 rounded-2xl group-hover:bg-gold transition-colors shadow-inner">
-                                        <p className="text-[12px] text-primary font-black group-hover:text-white uppercase tracking-tighter">
+                                    <div className="bg-slate-50 px-3 md:px-5 py-2 md:py-3 rounded-xl md:rounded-2xl group-hover:bg-gold transition-colors shadow-inner shrink-0 ml-2 md:ml-0">
+                                        <p className="text-[10px] md:text-[12px] text-primary font-black group-hover:text-white uppercase tracking-tighter">
                                             {price.toLocaleString()} DHS
                                         </p>
                                     </div>
@@ -548,17 +554,17 @@ export function ChatInterface({ isFullPage = false }: { isFullPage?: boolean }) 
                 )}
 
                 {step === 3 && (
-                    <div className="grid grid-cols-1 gap-4 pt-4">
+                    <div className="grid grid-cols-1 gap-3 md:gap-4 pt-2 md:pt-4">
                         {TRANSPORT_OPTIONS(language).map(opt => (
                             <button
                                 key={opt.id}
                                 onClick={() => handleTransportSelect(opt.id, opt.label)}
-                                className="p-6 rounded-[2.5rem] border-2 border-slate-50 bg-white hover:border-gold hover:bg-gold/5 transition-all flex items-center gap-6 group active:scale-95"
+                                className="p-4 md:p-6 rounded-[1.5rem] md:rounded-[2.5rem] border-2 border-slate-50 bg-white hover:border-gold hover:bg-gold/5 transition-all flex items-center gap-4 md:gap-6 group active:scale-95"
                             >
-                                <div className="w-16 h-16 rounded-[1.5rem] bg-slate-50 flex items-center justify-center text-primary group-hover:bg-gold group-hover:text-white transition-all transform group-hover:rotate-6 shadow-sm">
+                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-[1.5rem] bg-slate-50 flex items-center justify-center text-primary group-hover:bg-gold group-hover:text-white transition-all transform group-hover:rotate-6 shadow-sm">
                                     {opt.icon}
                                 </div>
-                                <p className={cn("font-black text-primary uppercase tracking-tight flex-grow text-left text-lg", isRTL && "text-right")}>{opt.label}</p>
+                                <p className={cn("font-black text-primary uppercase tracking-tight flex-grow text-left text-base md:text-lg", isRTL && "text-right")}>{opt.label}</p>
                             </button>
                         ))}
                     </div>
@@ -568,13 +574,13 @@ export function ChatInterface({ isFullPage = false }: { isFullPage?: boolean }) 
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        className="flex flex-col gap-5 pt-4"
+                        className="flex flex-col gap-3 md:gap-5 pt-2 md:pt-4"
                     >
                         <div className="relative group">
                             <Input
                                 className={cn(
-                                    "bg-slate-50 border-2 border-slate-100 hover:border-gold focus:border-gold rounded-[2rem] h-20 font-black text-primary text-lg transition-all shadow-inner",
-                                    isRTL ? "pr-16 pl-8" : "pl-16 pr-8"
+                                    "bg-slate-50 border-2 border-slate-100 hover:border-gold focus:border-gold rounded-2xl md:rounded-[2rem] h-14 md:h-20 font-black text-primary text-base md:text-lg transition-all shadow-inner",
+                                    isRTL ? "pr-12 md:pr-16 pl-6 md:pl-8" : "pl-12 md:pl-16 pr-6 md:pr-8"
                                 )}
                                 placeholder={step === 4 ? t.placeholderName : t.placeholderPhone}
                                 value={inputValue}
@@ -584,34 +590,35 @@ export function ChatInterface({ isFullPage = false }: { isFullPage?: boolean }) 
                                 }}
                                 autoFocus
                             />
-                            <div className={cn("absolute top-1/2 -translate-y-1/2 w-8 h-8 text-slate-300 group-focus-within:text-gold transition-colors", isRTL ? "right-6" : "left-6")}>
+                            <div className={cn("absolute top-1/2 -translate-y-1/2 w-6 h-6 md:w-8 md:h-8 text-slate-300 group-focus-within:text-gold transition-colors", isRTL ? "right-4 md:right-6" : "left-4 md:left-6")}>
                                 {step === 4 ? <UserCircle className="w-full h-full" /> : <PhoneIcon className="w-full h-full" />}
                             </div>
                         </div>
                         <Button
                             onClick={() => step === 4 ? handleNameInput() : handlePhoneInput()}
-                            className="h-16 bg-primary hover:bg-primary-90 text-white font-black rounded-[2rem] flex items-center justify-center gap-4 uppercase shadow-2xl shadow-primary/30 text-lg"
+                            className="h-14 md:h-16 bg-primary hover:bg-primary-90 text-white font-black rounded-2xl md:rounded-[2rem] flex items-center justify-center gap-3 md:gap-4 uppercase shadow-xl md:shadow-2xl shadow-primary/30 text-base md:text-lg"
                             disabled={!inputValue.trim()}
                         >
                             {isRTL ? 'تأكيد المهمة' : 'Confirmer'}
-                            <ArrowRight className={cn("w-6 h-6", isRTL && "rotate-180")} />
+                            <ArrowRight className={cn("w-5 h-5 md:w-6 md:h-6", isRTL && "rotate-180")} />
                         </Button>
                     </motion.div>
                 )}
             </div>
 
-            <div className="p-10 bg-slate-50 border-t border-slate-200">
-                <div className="bg-white border-2 border-slate-100 rounded-[2rem] px-8 py-5 flex items-center justify-between shadow-xl">
-                    <div className="flex items-center gap-4">
-                        <div className="w-4 h-4 bg-gold rounded-full animate-ping" />
-                        <span className="text-[11px] font-black text-slate-400 tracking-[0.3em] uppercase">{t.interactionRequired}</span>
+            <div className="p-4 md:p-10 bg-slate-50 border-t border-slate-200">
+                <div className="bg-white border-2 border-slate-100 rounded-2xl md:rounded-[2rem] px-4 md:px-8 py-3 md:py-5 flex items-center justify-between shadow-xl">
+                    <div className="flex items-center gap-3 md:gap-4">
+                        <div className="w-3 h-3 md:w-4 md:h-4 bg-gold rounded-full animate-ping" />
+                        <span className="text-[9px] md:text-[11px] font-black text-slate-400 tracking-[0.2em] md:tracking-[0.3em] uppercase">{t.interactionRequired}</span>
                     </div>
-                    <Bot className="w-7 h-7 text-slate-200" />
+                    <Bot className="w-5 h-5 md:w-7 md:h-7 text-slate-200" />
                 </div>
             </div>
 
             <style>{`
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        @media (min-width: 768px) { .custom-scrollbar::-webkit-scrollbar { width: 6px; } }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 20px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
