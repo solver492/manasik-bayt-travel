@@ -60,7 +60,11 @@ const ChatbotTranslations: any = {
             star5_11_30: { label: "5★ Mi-Ramadan", desc: "11 au 30 Ramadan - Hôtels Millennium / Misan", stars: 5 },
             star5_16_30: { label: "5★ Fin Ramadan", desc: "16 au 30 Ramadan - Hôtels Shuhada / Anjam", stars: 5 },
             vip_gold: { label: "VIP Gold", desc: "16 au 30 Ramadan - Fairmont / Swissotel / Marriott", stars: 5 },
-            vip_luxury: { label: "VIP Luxury", desc: "16 au 30 Ramadan - Address / Hilton / Jumeirah", stars: 5 }
+            vip_luxury: { label: "VIP Luxury", desc: "16 au 30 Ramadan - Address / Hilton / Jumeirah", stars: 5 },
+            eco_full: { label: "Éco Mois Complet", desc: "Chabane + Ramadan (17/02 au 22/03) - Vol direct", stars: 3 },
+            premium_full: { label: "Premium Mois Complet", desc: "Chabane + Ramadan (17/02 au 22/03) - Vol direct", stars: 4 },
+            mid_16_30: { label: "Moyen de Gamme", desc: "16 au 30 Ramadan - Hôtels Grand Plaza", stars: 4 },
+            vip_11_30_special: { label: "VIP 11-30 Ramadan", desc: "Élite - Swiss Maqam / Address / Mövenpick", stars: 5 }
         }
     },
     ar: {
@@ -101,7 +105,11 @@ const ChatbotTranslations: any = {
             star5_11_30: { label: "٥ نجوم - منتصف رمضان", desc: "١١ إلى ٣٠ رمضان - فنادق ميلنيوم / ميسان", stars: 5 },
             star5_16_30: { label: "٥ نجوم - أواخر رمضان", desc: "١٦ إلى ٣٠ رمضان - فنادق شهداء / أنجم", stars: 5 },
             vip_gold: { label: "VIP الذهبية", desc: "١٦ إلى ٣٠ رمضان - فيرمونت / سويس أوتيل / ماريوت", stars: 5 },
-            vip_luxury: { label: "VIP النخبة", desc: "١٦ إلى ٣٠ رمضان - العنوان / هيلتون / جميرا", stars: 5 }
+            vip_luxury: { label: "VIP النخبة", desc: "١٦ إلى ٣٠ رمضان - العنوان / هيلتون / جميرا", stars: 5 },
+            eco_full: { label: "اقتصادي شهر كامل", desc: "شعبان + رمضان (١٧/٠٢ إلى ٢٢/٠٣) - رحلة مباشرة", stars: 3 },
+            premium_full: { label: "ممتاز شهر كامل", desc: "شعبان + رمضان (١٧/٠٢ إلى ٢٢/٠٣) - رحلة مباشرة", stars: 4 },
+            mid_16_30: { label: "البرنامج المتوسط", desc: "١٦ إلى ٣٠ رمضان - فنادق جراند بلازا", stars: 4 },
+            vip_11_30_special: { label: "VIP ١١-٣٠ رمضان", desc: "نخبة - سويس مقام / العنوان / موفنبيك", stars: 5 }
         }
     }
 };
@@ -219,6 +227,82 @@ const PACKAGES = (t: any) => [
             { id: 'hilton_conv', label: 'Hilton Convention', prices: { quad: 64500, triple: 71500, double: 80500 } },
             { id: 'hyatt_regency', label: 'Hyatt Regency', prices: { quad: 67500, triple: 74500, double: 85500 } },
             { id: 'jumeirah', label: 'Jumeirah Jabal Omar', prices: { quad: 68500, triple: 73500, double: 87500 } },
+        ]
+    },
+    {
+        id: 'eco_full',
+        label: t.offers.eco_full.label,
+        icon: <Luggage className="w-5 h-5 text-gold" />,
+        description: t.offers.eco_full.desc,
+        madinaHotel: { fr: 'Rehab Al-Misk', ar: 'رحاب المسك' },
+        rooms: [
+            { id: 'quad', label: { fr: 'Quadruple', ar: 'رباعية' }, icon: '👥👥' },
+            { id: 'triple', label: { fr: 'Triple', ar: 'ثلاثية' }, icon: '👨‍👩‍👦' },
+            { id: 'double', label: { fr: 'Double', ar: 'ثنائية' }, icon: '👫' },
+        ],
+        hotels: [
+            { id: 'kadi_full', label: 'Kadi Tours', prices: { quad: 29500, triple: 31500, double: 35500 } },
+            { id: 'kaswah_full', label: 'Abraj Al-Kaswah', prices: { quad: 32500, triple: 35500, double: 37500 } },
+            { id: 'tayseer_full', label: 'Abraj Al-Tayseer', prices: { quad: 32500, triple: 34500, double: 38500 } },
+            { id: 'nawazi_full', label: 'Nawazi Tours', prices: { quad: 34500, triple: 38500, double: 42500 } },
+            { id: 'marriott_full', label: 'Kauthar Marbouth (Marriott)', prices: { quad: 35500, triple: 39500, double: 46500 } },
+        ]
+    },
+    {
+        id: 'premium_full',
+        label: t.offers.premium_full.label,
+        icon: <Star className="w-5 h-5 text-gold" />,
+        description: t.offers.premium_full.desc,
+        madinaHotel: { fr: 'Ansar Golden Tulip', ar: 'أنصار غولدن توليب' },
+        rooms: [
+            { id: 'quad', label: { fr: 'Quadruple', ar: 'رباعية' }, icon: '👥👥' },
+            { id: 'triple', label: { fr: 'Triple', ar: 'ثلاثية' }, icon: '👨‍👩‍👦' },
+            { id: 'double', label: { fr: 'Double', ar: 'ثنائية' }, icon: '👫' },
+        ],
+        hotels: [
+            { id: 'voco_full', label: 'Voco Makkah', prices: { quad: 34500, triple: 38500, double: 45500 } },
+            { id: 'unwan_full', label: 'Al Unwan Ajyad', prices: { quad: 35500, triple: 39500, double: 45500 } },
+            { id: 'badr_full', label: 'Badr Al Massa', prices: { quad: 35500, triple: 39500, double: 46500 } },
+            { id: 'nadi_full', label: 'Nadi Ajyad', prices: { quad: 38500, triple: 43500, double: 58500 } },
+            { id: 'makkat_full', label: 'Makkat Ajyad', prices: { quad: 41500, triple: 49500, double: 62500 } },
+        ]
+    },
+    {
+        id: 'mid_16_30',
+        label: t.offers.mid_16_30.label,
+        icon: <Hotel className="w-5 h-5 text-gold" />,
+        description: t.offers.mid_16_30.desc,
+        madinaHotel: { fr: 'Grand Plaza', ar: 'جراند بلازا' },
+        rooms: [
+            { id: 'quad', label: { fr: 'Quadruple', ar: 'رباعية' }, icon: '👥👥' },
+            { id: 'triple', label: { fr: 'Triple', ar: 'ثلاثية' }, icon: '👨‍👩‍👦' },
+            { id: 'double', label: { fr: 'Double', ar: 'ثنائية' }, icon: '👫' },
+        ],
+        hotels: [
+            { id: 'badr_mid', label: 'Badr Al Massa', prices: { quad: 33500, triple: 35500, double: 35500 } },
+            { id: 'nadi_mid', label: 'Nadi Ajyad', prices: { quad: 35500, triple: 39500, double: 44500 } },
+            { id: 'wahat_mid', label: 'Wahat Ajyad', prices: { quad: 36500, triple: 40500, double: 45500 } },
+            { id: 'ramada_mid', label: 'Ramada Al Massa', prices: { quad: 37500, triple: 42500, double: 47500 } },
+            { id: 'sanood_mid', label: 'Sanood Ajyad', prices: { quad: 37500, triple: 42500, double: 47500 } },
+        ]
+    },
+    {
+        id: 'vip_11_30_special',
+        label: t.offers.vip_11_30_special.label,
+        icon: <Trophy className="w-5 h-5 text-gold" />,
+        description: t.offers.vip_11_30_special.desc,
+        madinaHotel: { fr: 'Misan Harithia / Millennium', ar: 'ميسان الحارثية / ميلنيوم' },
+        rooms: [
+            { id: 'quad', label: { fr: 'Quadruple', ar: 'رباعية' }, icon: '👥👥' },
+            { id: 'triple', label: { fr: 'Triple', ar: 'ثلاثية' }, icon: '👨‍👩‍👦' },
+            { id: 'double', label: { fr: 'Double', ar: 'ثنائية' }, icon: '👫' },
+        ],
+        hotels: [
+            { id: 'swiss_maqam_vip', label: 'Swissotel Al Maqam', prices: { quad: 69500, triple: 78500, double: 92500 } },
+            { id: 'hajar_vip', label: 'Mövenpick Hajar', prices: { quad: 67500, triple: 76500, double: 89500 } },
+            { id: 'safwah_vip', label: 'Safwah Tower 3', prices: { quad: 58500, triple: 67500, double: 85500 } },
+            { id: 'address_vip', label: 'Address Jabal Omar', prices: { quad: 66500, triple: 71500, double: 82500 } },
+            { id: 'anjam_vip', label: 'Anjam Makkah', prices: { quad: 53500, triple: 58500, double: 69500 } },
         ]
     }
 ];
