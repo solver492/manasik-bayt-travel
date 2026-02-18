@@ -3,12 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Car, Shield, Gauge, Clock, ArrowLeft, Key } from "lucide-react";
 import { motion } from "framer-motion";
+import { AviasalesWidget } from "@/components/AviasalesWidget";
 
 export default function CarRentService() {
     const { t } = useLanguage();
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="min-h-screen bg-background pb-20">
             <header className="relative h-[60vh] flex items-end pb-20 overflow-hidden">
                 <div className="absolute inset-0 z-0">
                     <img
@@ -42,6 +43,29 @@ export default function CarRentService() {
             </header>
 
             <section className="py-24 container mx-auto px-4">
+                {/* Car Rental Widgets */}
+                <div className="mb-20 space-y-12">
+                    <div className="rounded-xl overflow-hidden shadow-lg border border-border bg-card">
+                        <div className="p-4 border-b bg-muted/50 text-center">
+                            <h2 className="text-2xl font-serif font-bold text-primary">Réserver un Transfert</h2>
+                        </div>
+                        <AviasalesWidget 
+                            scriptSrc="https://tpwdg.com/content?trs=499992&powered_by=true&shmarker=578528&form_title=manasik-rent&from=tanger&to=casablanca&language=en&display_currency=EUR&transfer_type=any&theme=hros&hide_form_extras=true&hide_external_links=true&disable_currency_selector=true&campaign_id=1&promo_id=691" 
+                            className="w-full min-h-[300px]"
+                        />
+                    </div>
+
+                    <div className="rounded-xl overflow-hidden shadow-lg border border-border bg-card">
+                        <div className="p-4 border-b bg-muted/50 text-center">
+                            <h2 className="text-2xl font-serif font-bold text-primary">Agence Manasik Travel</h2>
+                        </div>
+                        <AviasalesWidget 
+                            scriptSrc="//tpwdg.com/content?trs=499992&shmarker=578528&locale=fr&n_ap=tanger&powered_by=true&color_scheme=bg&header=agence%20multi%20service%20manasik%20travel%20agency&b_counter=true&b_benefit=true&b_descr=true&b_about=true&b_map=true&b_reviews=true&b_breadcrumbs=true&b_poweredby=true&b_numbers=true&b_trustpilot=true&b_assortment=true&b_reliable=true&b_extended=true&b_how=true&b_faq=true&b_why=true&b_easybook=true&campaign_id=22&promo_id=1504" 
+                            className="w-full min-h-[600px]"
+                        />
+                    </div>
+                </div>
+
                 <div className="text-center max-w-3xl mx-auto mb-20 space-y-6">
                     <h2 className="text-4xl font-serif font-bold text-primary">Pourquoi nous choisir ?</h2>
                     <p className="text-muted-foreground text-lg">

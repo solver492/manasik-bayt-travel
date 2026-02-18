@@ -50,6 +50,16 @@ export default function OffersList() {
                 className="w-full min-h-[400px]"
               />
             </div>
+
+            <div className="rounded-xl overflow-hidden shadow-lg border border-border bg-card">
+              <div className="p-4 border-b bg-muted/50">
+                <h2 className="text-xl font-semibold text-primary">Hotel & Flight Search</h2>
+              </div>
+              <AviasalesWidget 
+                scriptSrc="https://tpwdg.com/content?currency=eur&trs=499992&shmarker=578528&show_hotels=true&powered_by=true&locale=ar&searchUrl=search.jetradar.com&primary_override=%230A3B0Aff&color_button=%23153F0Cff&color_icons=%23051747ff&dark=%23262626&light=%23FDE2E2ff&secondary=%23ACB0ACff&special=%23C4C4C4&color_focused=%2332a8dd&border_radius=0&no_labels=true&plain=true&origin=TNG&destination=MED&promo_id=7879&campaign_id=100" 
+                className="w-full min-h-[400px]"
+              />
+            </div>
           </div>
         )}
 
