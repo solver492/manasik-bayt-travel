@@ -3,9 +3,11 @@ import { useOffers } from "@/hooks/use-offers";
 import { useLanguage } from "@/lib/i18n";
 import OfferCard from "@/components/OfferCard";
 import { Loader2 } from "lucide-react";
+import { AviasalesWidget } from "@/components/AviasalesWidget";
 
 export default function OffersList() {
   const [match, params] = useRoute("/:category");
+  const isTravelPage = params?.category === "travel";
   const category = params?.category === "omra" ? "manasik" : 
                    params?.category === "travel" ? "touristique" : 
                    params?.category === "packs" ? "pack" : undefined;
@@ -25,6 +27,31 @@ export default function OffersList() {
              Explore our exclusive selection of {params?.category} packages designed for your comfort and spiritual peace.
            </p>
         </div>
+
+        {/* Aviasales Widgets for Travel Page */}
+        {isTravelPage && (
+          <div className="mb-16 space-y-12">
+            <div className="rounded-xl overflow-hidden shadow-lg border border-border bg-card">
+              <div className="p-4 border-b bg-muted/50">
+                <h2 className="text-xl font-semibold text-primary">Explore Destinations</h2>
+              </div>
+              <AviasalesWidget 
+                scriptSrc="https://tpwdg.com/content?currency=eur&trs=499992&shmarker=578528&lat=35.726288&lng=-5.912898&powered_by=true&search_host=www.aviasales.com%2Fsearch&locale=en&origin=TNG&value_min=0&value_max=1000000&round_trip=true&only_direct=false&radius=1&draggable=true&disable_zoom=false&show_logo=false&scrollwheel=false&primary=%230B2F08ff&secondary=%233FABDB&light=%23ffffff&width=1500&height=500&zoom=2&promo_id=4054&campaign_id=100" 
+                className="w-full min-h-[500px]"
+              />
+            </div>
+
+            <div className="rounded-xl overflow-hidden shadow-lg border border-border bg-card">
+              <div className="p-4 border-b bg-muted/50">
+                <h2 className="text-xl font-semibold text-primary">Search Flights</h2>
+              </div>
+              <AviasalesWidget 
+                scriptSrc="https://tpwdg.com/content?currency=eur&trs=499992&shmarker=578528&color_button=%230A370Cff&target_host=search.jetradar.com&locale=ar&powered_by=true&origin=TNG&destination=DXB&with_fallback=true&non_direct_flights=true&min_lines=5&border_radius=10&color_background=%23FFFFFF&color_text=%23000000&color_border=%23FFFFFF&promo_id=2811&campaign_id=100" 
+                className="w-full min-h-[400px]"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Grid */}
         {isLoading ? (
